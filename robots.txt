@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://Fomainspi.github.io/foma-website/sitemap.xml
