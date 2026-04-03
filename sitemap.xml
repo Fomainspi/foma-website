@@ -1,32 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
-    <url>
-        <loc>https://Fomainspi.github.io/foma-website/</loc>
-    </url>
+  <url>
+    <loc>https://Fomainspi.github.io/foma-website/</loc>
+    <lastmod>2026-04-03</lastmod>
+  </url>
 
-    <url>
-        <loc>https://Fomainspi.github.io/foma-website/blog.html</loc>
-    </url>
+  <url>
+    <loc>https://Fomainspi.github.io/foma-website/blog.html</loc>
+    <lastmod>2026-04-03</lastmod>
+  </url>
 
-    <url>
-        <loc>https://Fomainspi.github.io/foma-website/about.html</loc>
-    </url>
+  <url>
+    <loc>https://Fomainspi.github.io/foma-website/about.html</loc>
+    <lastmod>2026-04-03</lastmod>
+  </url>
 
-    <url>
-        <loc>https://Fomainspi.github.io/foma-website/contact.html</loc>
-    </url>
+  <url>
+    <loc>https://Fomainspi.github.io/foma-website/contact.html</loc>
+    <lastmod>2026-04-03</lastmod>
+  </url>
 
-    <url>
-        <loc>https://Fomainspi.github.io/foma-website/blog/article1.html</loc>
-    </url>
-
-    <url>
-        <loc>https://Fomainspi.github.io/foma-website/blog/kubernetes.html</loc>
-    </url>
-
-    <url>
-        <loc>https://Fomainspi.github.io/foma-website/blog/post.html</loc>
-    </url>
+  <url>
+    <loc>https://Fomainspi.github.io/foma-website/blog/article1.html</loc>
+    <lastmod>2026-04-03</lastmod>
+  </url>
 
 </urlset>
