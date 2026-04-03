@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FOMA Blog - DevOps Learning Hub</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Open+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/blog.css">
+</head>
+<body>
+
+<!-- HERO SECTION -->
+<section class="blog-hero">
+    <div class="blog-hero-content">
+        <h1 data-lang="blog_hero_title">FOMA DevOps Learning Hub</h1>
+        <p data-lang="blog_hero_subtitle">Learn Docker, Kubernetes, Terraform, CI/CD, Cloud and Linux step by step</p>
+        <div class="search-bar-container">
+            <input 
+                type="text" 
+                id="searchInput" 
+                class="search-bar" 
+                placeholder="Search blog posts..."
+                data-lang-placeholder="blog_search_placeholder"
+            >
+            <button class="search-btn" id="searchBtn">🔍</button>
+        </div>
+    </div>
+    <a href="index.html" class="blog-back-home-btn" data-lang="back_home">Back to Home</a>
+    <div class="blog-language-switch">
+        <button onclick="setLanguage('en')">EN</button>
+        <button onclick="setLanguage('fr')">FR</button>
+    </div>
+</section>
+
+<!-- CATEGORY FILTER SECTION -->
+<section class="blog-filters">
+    <div class="filters-container">
+        <h2 data-lang="blog_categories">Categories</h2>
+        <div class="category-buttons">
+            <button class="category-btn active" data-category="all" data-lang="blog_all">All</button>
+            <button class="category-btn" data-category="docker" data-lang="blog_docker">Docker</button>
+            <button class="category-btn" data-category="kubernetes" data-lang="blog_kubernetes">Kubernetes</button>
+            <button class="category-btn" data-category="terraform" data-lang="blog_terraform">Terraform</button>
+            <button class="category-btn" data-category="cicd" data-lang="blog_cicd">CI/CD</button>
+            <button class="category-btn" data-category="cloud" data-lang="blog_cloud">Cloud</button>
+            <button class="category-btn" data-category="linux" data-lang="blog_linux">Linux</button>
+            <button class="category-btn" data-category="devsecops" data-lang="blog_devsecops">DevSecOps</button>
+        </div>
+    </div>
+</section>
+
+<!-- BLOG POSTS GRID -->
+<section class="blog-posts">
+    <div class="posts-container" id="postsContainer">
+        <!-- Blog posts will be dynamically loaded here -->
+    </div>
+</section>
+
+<!-- LOAD MORE BUTTON -->
+<section class="load-more-section">
+    <button class="load-more-btn" id="loadMoreBtn" data-lang="blog_load_more">Load More Posts</button>
+</section>
+
+<script src="js/translations.js"></script>
+<script src="js/blog.js"></script>
+<script src="js/main.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Docker Fundamentals - FOMA Blog</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Open+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/styles.css">
+    <link rel="stylesheet" href="../css/blog-post.css">
+</head>
+<body>
+
+<div style="text-align: center; padding: 20px; background: black; color: white;">
+    <a href="../index.html" style="background: #64ffda; color: black; padding: 10px 20px; text-decoration: none; border-radius: 4px; font-weight: 500;">Back to Home</a>
+</div>
+
+<!-- ARTICLE HEADER -->
+<article class="blog-post-article">
+    <header class="post-header">
+        <div class="post-header-content">
+            <span class="post-category">Docker</span>
+            <h1 class="post-title">Docker Fundamentals: Containerize Your Applications</h1>
+            <div class="post-meta">
+                <span class="post-author">By FOMA</span>
+                <span class="post-date">April 1, 2026</span>
+                <span class="post-read-time">8 min read</span>
+            </div>
+            <img src="../images/devops.jpg" alt="Docker" class="post-featured-image">
+        </div>
+    </header>
+
+    <div class="post-content">
+        <!-- INTRODUCTION SECTION -->
+        <section class="post-section">
+            <h2>Introduction</h2>
+            <p>
+                Docker has revolutionized the way developers build, ship, and run applications. By containerizing applications, Docker ensures that your code runs consistently across different environments—from your local machine to production servers.
+            </p>
+            <p>
+                In this comprehensive guide, we'll explore the fundamentals of Docker, including how to create images, run containers, and apply best practices for containerized application development.
+            </p>
+        </section>
+
+        <!-- PROBLEM SECTION -->
+        <section class="post-section">
+            <h2>The Problem: "It Works on My Machine"</h2>
+            <p>
+                Before Docker, development teams faced a common challenge: applications that worked perfectly on a developer's machine would fail in production or on colleagues' systems. This was due to differences in:
+            </p>
+            <ul>
+                <li>Operating system versions</li>
+                <li>Installed dependencies and libraries</li>
+                <li>Environment variables and configurations</li>
+                <li>Java, Python, Node.js, and other runtime versions</li>
+            </ul>
+            <p>
+                This inconsistency led to wasted time debugging, delayed releases, and unreliable deployments.
+            </p>
+        </section>
+
+        <!-- SOLUTION SECTION -->
+        <section class="post-section">
+            <h2>The Solution: Docker Containers</h2>
+            <p>
+                Docker solves this problem by packaging your entire application along with all its dependencies into a lightweight, portable unit called a <strong>container</strong>. Once containerized, your application will run identically on any machine that has Docker installed.
+            </p>
+            <p>
+                Key benefits include:
+            </p>
+            <ul>
+                <li><strong>Consistency:</strong> Applications run the same everywhere</li>
+                <li><strong>Isolation:</strong> Containers are isolated from each other and the host system</li>
+                <li><strong>Scalability:</strong> Easy to scale applications horizontally</li>
+                <li><strong>Efficiency:</strong> Lightweight compared to virtual machines</li>
+                <li><strong>Speed:</strong> Instant startup times</li>
+            </ul>
+        </section>
+
+        <!-- STEP-BY-STEP GUIDE -->
+        <section class="post-section">
+            <h2>Step-by-Step Guide: Your First Docker Container</h2>
+
+            <h3>Step 1: Install Docker</h3>
+            <p>First, install Docker from <a href="https://www.docker.com/products/docker-desktop" target="_blank">docker.com</a>. Choose the version for your operating system (Windows, Mac, or Linux).</p>
+            <p>Verify the installation:</p>
+            <div class="code-block">
+                <code>docker --version</code>
+            </div>
+
+            <h3>Step 2: Understand Docker Images and Containers</h3>
+            <p>
+                A <strong>Docker image</strong> is a blueprint for creating containers. Think of it as a template or class in programming. A <strong>Docker container</strong> is an instance of an image running in isolation.
+            </p>
+
+            <h3>Step 3: Run Your First Container</h3>
+            <p>Run a simple Ubuntu container:</p>
+            <div class="code-block">
+                <code>docker run -it ubuntu bash</code>
+            </div>
+            <p>
+                This command pulls the Ubuntu image from Docker Hub, creates a container, and opens an interactive bash shell. Type <code>exit</code> to leave the container.
+            </p>
+
+            <h3>Step 4: Create a Dockerfile</h3>
+            <p>Create a file named <code>Dockerfile</code> in your project directory:</p>
+            <div class="code-block">
+                <code>
+# Use official Python image as base<br>
+FROM python:3.9-slim<br>
+<br>
+# Set working directory<br>
+WORKDIR /app<br>
+<br>
+# Copy requirements file<br>
+COPY requirements.txt .<br>
+<br>
+# Install dependencies<br>
+RUN pip install -r requirements.txt<br>
+<br>
+# Copy application code<br>
+COPY . .<br>
+<br>
+# Expose port<br>
+EXPOSE 5000<br>
+<br>
+# Run the application<br>
+CMD ["python", "app.py"]
+                </code>
+            </div>
+
+            <h3>Step 5: Build Your Image</h3>
+            <p>Build your Docker image:</p>
+            <div class="code-block">
+                <code>docker build -t my-python-app:1.0 .</code>
+            </div>
+
+            <h3>Step 6: Run Your Container</h3>
+            <p>Run your application in a container:</p>
+            <div class="code-block">
+                <code>docker run -p 5000:5000 my-python-app:1.0</code>
+            </div>
+            <p>Your application is now running inside a container on port 5000!</p>
+
+            <h3>Step 7: Common Docker Commands</h3>
+            <p>Here are some essential Docker commands:</p>
+            <div class="code-block">
+                <code>
+# List running containers<br>
+docker ps<br>
+<br>
+# List all containers (including stopped)<br>
+docker ps -a<br>
+<br>
+# Stop a container<br>
+docker stop &lt;container_id&gt;<br>
+<br>
+# Remove a container<br>
+docker rm &lt;container_id&gt;<br>
+<br>
+# View container logs<br>
+docker logs &lt;container_id&gt;<br>
+<br>
+# Execute command in running container<br>
+docker exec -it &lt;container_id&gt; bash
+                </code>
+            </div>
+        </section>
+
+        <!-- BEST PRACTICES SECTION -->
+        <section class="post-section">
+            <h2>Docker Best Practices</h2>
+            <ul>
+                <li><strong>Use specific base image versions:</strong> Avoid using <code>latest</code> tag in production</li>
+                <li><strong>Keep images small:</strong> Use minimal base images like Alpine Linux</li>
+                <li><strong>Use multi-stage builds:</strong> Reduce final image size</li>
+                <li><strong>Never run containers as root:</strong> Create a non-root user</li>
+                <li><strong>Use .dockerignore:</strong> Exclude unnecessary files from the build context</li>
+                <li><strong>Leverage layer caching:</strong> Order Dockerfile commands efficiently</li>
+                <li><strong>Document your code:</strong> Add clear comments in your Dockerfiles</li>
+                <li><strong>Scan for vulnerabilities:</strong> Use Docker Scout to identify security issues</li>
+            </ul>
+        </section>
+
+        <!-- CONCLUSION SECTION -->
+        <section class="post-section">
+            <h2>Conclusion</h2>
+            <p>
+                Docker has become an essential tool in modern software development. By understanding containers, images, and how to use Docker effectively, you're taking a crucial step toward becoming a proficient DevOps engineer.
+            </p>
+            <p>
+                In our next tutorial, we'll explore how to orchestrate multiple containers using Docker Compose and Kubernetes. Keep learning, keep building, and remember: containerization is the future of application deployment!
+            </p>
+        </section>
+
+        <!-- CALL TO ACTION -->
+        <section class="post-cta">
+            <div class="cta-card">
+                <h3>Ready to Master Docker?</h3>
+                <p>Explore our complete Docker course with hands-on projects and real-world examples.</p>
+                <a href="../blog.html" class="cta-button">Back to Blog</a>
+            </div>
+        </section>
+    </div>
+</article>
+
+<script src="../js/translations.js"></script>
+<script src="../js/main.js"></script>
+</body>
+</html>

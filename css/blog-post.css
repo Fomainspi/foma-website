@@ -1,0 +1,267 @@
+/* BLOG POST PAGE STYLES */
+
+.blog-post-article {
+    background: #000;
+    color: white;
+}
+
+/* Post Header */
+.post-header {
+    background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+    padding: 60px 20px;
+    border-bottom: 3px solid #64ffda;
+}
+
+.post-header-content {
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.post-category {
+    display: inline-block;
+    background: rgba(100, 255, 218, 0.2);
+    color: #64ffda;
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-size: 0.9em;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-family: 'Poppins', sans-serif;
+    margin-bottom: 20px;
+}
+
+.post-title {
+    font-family: 'Poppins', sans-serif;
+    font-size: 2.8em;
+    font-weight: 700;
+    margin: 20px 0;
+    line-height: 1.3;
+    color: #64ffda;
+}
+
+.post-meta {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    margin-bottom: 30px;
+    font-family: 'Open Sans', sans-serif;
+    color: #b0b0b0;
+    font-size: 0.95em;
+}
+
+.post-author {
+    color: #64ffda;
+    font-weight: 600;
+}
+
+.post-featured-image {
+    width: 100%;
+    max-width: 900px;
+    height: auto;
+    border-radius: 12px;
+    margin-top: 30px;
+    border: 2px solid #333;
+}
+
+/* Post Content */
+.post-content {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 60px 20px;
+}
+
+.post-section {
+    margin-bottom: 50px;
+}
+
+.post-section h2 {
+    font-family: 'Poppins', sans-serif;
+    font-size: 2.2em;
+    font-weight: 600;
+    color: #64ffda;
+    margin-bottom: 20px;
+    margin-top: 0;
+    padding-bottom: 15px;
+    border-bottom: 2px solid #333;
+}
+
+.post-section h3 {
+    font-family: 'Poppins', sans-serif;
+    font-size: 1.6em;
+    font-weight: 600;
+    color: white;
+    margin-top: 30px;
+    margin-bottom: 15px;
+}
+
+.post-section p {
+    font-family: 'Open Sans', sans-serif;
+    font-size: 1.1em;
+    line-height: 1.8;
+    color: #d0d0d0;
+    margin-bottom: 15px;
+}
+
+.post-section ul {
+    margin: 20px 0;
+    padding-left: 30px;
+}
+
+.post-section li {
+    font-family: 'Open Sans', sans-serif;
+    font-size: 1.1em;
+    line-height: 1.7;
+    color: #d0d0d0;
+    margin-bottom: 10px;
+}
+
+.post-section a {
+    color: #64ffda;
+    text-decoration: none;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.post-section a:hover {
+    color: #50e5c9;
+    text-decoration: underline;
+}
+
+/* Code Blocks */
+.code-block {
+    background: #1a1a1a;
+    border-left: 4px solid #64ffda;
+    padding: 20px;
+    border-radius: 8px;
+    margin: 20px 0;
+    overflow-x: auto;
+    font-family: 'Courier New', monospace;
+    font-size: 0.95em;
+}
+
+.code-block code {
+    color: #64ffda;
+    display: block;
+    white-space: pre-wrap;
+    word-break: break-word;
+    line-height: 1.6;
+}
+
+.code-block code strong {
+    color: #ffb6c1;
+}
+
+/* Call to Action */
+.post-cta {
+    margin-top: 60px;
+    padding-top: 40px;
+    border-top: 2px solid #333;
+}
+
+.cta-card {
+    background: linear-gradient(135deg, rgba(100, 255, 218, 0.1) 0%, rgba(100, 255, 218, 0.05) 100%);
+    border: 2px solid #64ffda;
+    border-radius: 12px;
+    padding: 40px;
+    text-align: center;
+}
+
+.cta-card h3 {
+    font-family: 'Poppins', sans-serif;
+    font-size: 1.8em;
+    color: #64ffda;
+    margin-top: 0;
+}
+
+.cta-card p {
+    font-family: 'Open Sans', sans-serif;
+    font-size: 1.1em;
+    color: #b0b0b0;
+    margin-bottom: 20px;
+}
+
+.cta-button {
+    display: inline-block;
+    background: #64ffda;
+    color: #000;
+    padding: 15px 40px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.cta-button:hover {
+    background: #50e5c9;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(100, 255, 218, 0.3);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .post-header {
+        padding: 40px 15px;
+    }
+
+    .post-title {
+        font-size: 2em;
+    }
+
+    .post-header-content {
+        margin: 0 auto;
+    }
+
+    .post-content {
+        padding: 40px 15px;
+    }
+
+    .post-section h2 {
+        font-size: 1.8em;
+    }
+
+    .post-section h3 {
+        font-size: 1.3em;
+    }
+
+    .post-section p,
+    .post-section li {
+        font-size: 1em;
+    }
+
+    .post-meta {
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .cta-card {
+        padding: 25px;
+    }
+
+    .cta-card h3 {
+        font-size: 1.5em;
+    }
+}
+
+@media (max-width: 480px) {
+    .post-title {
+        font-size: 1.5em;
+    }
+
+    .post-section h2 {
+        font-size: 1.4em;
+    }
+
+    .post-section h3 {
+        font-size: 1.1em;
+    }
+
+    .code-block {
+        padding: 15px;
+        font-size: 0.85em;
+    }
+
+    .cta-card {
+        padding: 20px;
+    }
+}

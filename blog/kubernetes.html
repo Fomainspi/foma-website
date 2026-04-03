@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kubernetes Orchestration - FOMA Blog</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Open+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/styles.css">
+    <link rel="stylesheet" href="../css/blog-post.css">
+</head>
+<body>
+
+<div style="text-align: center; padding: 20px; background: black; color: white;">
+    <a href="../index.html" style="background: #64ffda; color: black; padding: 10px 20px; text-decoration: none; border-radius: 4px; font-weight: 500;">Back to Home</a>
+</div>
+
+<!-- ARTICLE HEADER -->
+<article class="blog-post-article">
+    <header class="post-header">
+        <div class="post-header-content">
+            <span class="post-category">Kubernetes</span>
+            <h1 class="post-title">Kubernetes Overview: Orchestrating Containers at Scale</h1>
+            <div class="post-meta">
+                <span class="post-author">By FOMA</span>
+                <span class="post-date">March 28, 2026</span>
+                <span class="post-read-time">10 min read</span>
+            </div>
+            <img src="../images/devops.jpg" alt="Kubernetes" class="post-featured-image">
+        </div>
+    </header>
+
+    <div class="post-content">
+        <!-- INTRODUCTION SECTION -->
+        <section class="post-section">
+            <h2>Introduction</h2>
+            <p>
+                As containerization becomes standard in software development, managing and orchestrating hundreds or thousands of containers becomes increasingly complex. This is where Kubernetes (K8s) comes in.
+            </p>
+            <p>
+                Kubernetes is an open-source container orchestration platform that automates the deployment, scaling, and management of containerized applications. It takes the concept of containers introduced by Docker and elevates it to production-grade infrastructure.
+            </p>
+        </section>
+
+        <!-- PROBLEM SECTION -->
+        <section class="post-section">
+            <h2>The Challenge: Container Management at Scale</h2>
+            <p>
+                While Docker containers provide excellent isolation and portability, managing them manually quickly becomes impractical as your application scales. Challenges include:
+            </p>
+            <ul>
+                <li>Deploying multiple containers across multiple machines</li>
+                <li>Automatically scaling containers based on demand</li>
+                <li>Rolling updates without downtime</li>
+                <li>Health monitoring and automatic recovery</li>
+                <li>Load balancing and service discovery</li>
+            </ul>
+        </section>
+
+        <!-- SOLUTION SECTION -->
+        <section class="post-section">
+            <h2>The Solution: Kubernetes Orchestration</h2>
+            <p>
+                Kubernetes provides a comprehensive platform for orchestrating containerized workloads. It abstracts away the underlying infrastructure and provides unified APIs for managing applications at scale.
+            </p>
+            <p>
+                Key features of Kubernetes:
+            </p>
+            <ul>
+                <li><strong>Self-healing:</strong> Automatically restarts failed containers</li>
+                <li><strong>Auto-scaling:</strong> Scales based on CPU and memory metrics</li>
+                <li><strong>Load balancing:</strong> Distributes traffic across container replicas</li>
+                <li><strong>Rolling updates:</strong> Zero-downtime deployments</li>
+                <li><strong>Secret management:</strong> Secure handling of sensitive data</li>
+                <li><strong>Storage orchestration:</strong> Manages persistent data</li>
+            </ul>
+        </section>
+
+        <!-- STEP-BY-STEP GUIDE -->
+        <section class="post-section">
+            <h2>Getting Started with Kubernetes</h2>
+
+            <h3>Step 1: Understand Core Concepts</h3>
+            <p>Before deploying to Kubernetes, understand these core concepts:</p>
+            <ul>
+                <li><strong>Pod:</strong> Smallest deployable unit, usually one container (but can have multiple)</li>
+                <li><strong>Deployment:</strong> Manages a set of identical pods</li>
+                <li><strong>Service:</strong> Provides a stable IP and DNS name for accessing pods</li>
+                <li><strong>Namespace:</strong> Virtual clusters for multi-team environments</li>
+            </ul>
+
+            <h3>Step 2: Install kubectl</h3>
+            <p>kubectl is the command-line tool for Kubernetes:</p>
+            <div class="code-block">
+                <code>
+curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"<br>
+chmod +x kubectl<br>
+sudo mv kubectl /usr/local/bin/
+                </code>
+            </div>
+
+            <h3>Step 3: Create Your First Deployment</h3>
+            <p>Create a file named <code>deployment.yaml</code>:</p>
+            <div class="code-block">
+                <code>
+apiVersion: apps/v1<br>
+kind: Deployment<br>
+metadata:<br>
+  name: nginx-deployment<br>
+spec:<br>
+  replicas: 3<br>
+  selector:<br>
+    matchLabels:<br>
+      app: nginx<br>
+  template:<br>
+    metadata:<br>
+      labels:<br>
+        app: nginx<br>
+    spec:<br>
+      containers:<br>
+      - name: nginx<br>
+        image: nginx:latest<br>
+        ports:<br>
+        - containerPort: 80
+                </code>
+            </div>
+
+            <h3>Step 4: Deploy to Kubernetes</h3>
+            <div class="code-block">
+                <code>
+kubectl apply -f deployment.yaml<br>
+kubectl get deployments<br>
+kubectl get pods
+                </code>
+            </div>
+
+            <h3>Step 5: Expose Your Application</h3>
+            <p>Create a Service to expose your application:</p>
+            <div class="code-block">
+                <code>
+kubectl expose deployment nginx-deployment --type=LoadBalancer --port=80 --target-port=80
+                </code>
+            </div>
+        </section>
+
+        <!-- BEST PRACTICES SECTION -->
+        <section class="post-section">
+            <h2>Kubernetes Best Practices</h2>
+            <ul>
+                <li><strong>Use Namespaces:</strong> Organize resources for multi-team environments</li>
+                <li><strong>Resource Requests and Limits:</strong> Define CPU and memory requirements</li>
+                <li><strong>Health Checks:</strong> Implement liveness and readiness probes</li>
+                <li><strong>RBAC:</strong> Use Role-Based Access Control for security</li>
+                <li><strong>Network Policies:</strong> Restrict traffic between pods</li>
+                <li><strong>PersistentVolumes:</strong> Manage data across pod restarts</li>
+                <li><strong>ConfigMaps and Secrets:</strong> Separate configuration from code</li>
+            </ul>
+        </section>
+
+        <!-- CONCLUSION SECTION -->
+        <section class="post-section">
+            <h2>Conclusion</h2>
+            <p>
+                Kubernetes is the industry standard for container orchestration. While it has a learning curve, mastering it is essential for modern DevOps engineers.
+            </p>
+            <p>
+                Start with the basics, practice with managed Kubernetes services like EKS, GKE, or AKS, and gradually move to more advanced features. Your journey toward Kubernetes expertise starts here!
+            </p>
+        </section>
+
+        <!-- CALL TO ACTION -->
+        <section class="post-cta">
+            <div class="cta-card">
+                <h3>Master Kubernetes with FOMA</h3>
+                <p>Learn Kubernetes architecture, deployment strategies, and production-ready practices through hands-on projects.</p>
+                <a href="../blog.html" class="cta-button">Back to Blog</a>
+            </div>
+        </section>
+    </div>
+</article>
+
+<script src="../js/translations.js"></script>
+<script src="../js/main.js"></script>
+</body>
+</html>
