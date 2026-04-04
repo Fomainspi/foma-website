@@ -1,17 +1,32 @@
 let currentLang = localStorage.getItem('preferredLanguage') || "en";
+const isNestedPage = window.location.pathname.includes('/blog/') || window.location.pathname.includes('/training/');
+const pathPrefix = isNestedPage ? "../" : "./";
 
 // Load header dynamically (use relative path for local server)
-fetch("components/header.html?t=" + Date.now())
+fetch(`${pathPrefix}components/header.html?t=${Date.now()}`)
     .then(res => res.text())
     .then(data => {
         document.body.insertAdjacentHTML("afterbegin", data);
+        const header = document.querySelector('header');
+        if (header) {
+            // Rebase relative links in injected header when loaded from nested folders.
+            header.querySelectorAll('a[href]').forEach(link => {
+                const href = link.getAttribute('href');
+                if (!href || href.startsWith('http') || href.startsWith('#') || href.startsWith('mailto:')) return;
+                const normalized = href.replace(/^\.\//, '').replace(/^\.\.\//, '');
+                link.setAttribute('href', `${pathPrefix}${normalized}`);
+            });
+        }
+
         // Force reload the logo image
         const logoImg = document.querySelector('.logo-img');
         if (logoImg) {
-            logoImg.src = logoImg.src.split('?')[0] + '?t=' + Date.now();
+            const src = logoImg.getAttribute('src') || 'images/logo.png';
+            const normalizedSrc = src.replace(/^\.\//, '').replace(/^\.\.\//, '');
+            logoImg.src = `${pathPrefix}${normalizedSrc}?t=${Date.now()}`;
         }
         // Hide back to home button on home page
-        if (window.location.pathname === '/' || window.location.pathname.endsWith('index.html')) {
+        if (window.location.pathname === '/' || window.location.pathname.endsWith('/index.html') || window.location.pathname.endsWith('index.html')) {
             const backHomeLi = document.querySelector('.back-home-li');
             const homeLi = document.querySelector('.home-li');
             if (backHomeLi) backHomeLi.style.display = 'none';
@@ -104,6 +119,9 @@ function loadPosts(page = 1) {
         const card = document.createElement("div");
         card.className = "blog-card";
         card.setAttribute("data-category", article.category);
+        card.setAttribute("role", "link");
+        card.setAttribute("tabindex", "0");
+        card.style.cursor = "pointer";
 
         card.innerHTML = `
             <img src="${article.image}" loading="lazy" alt="${article.title}">
@@ -111,6 +129,22 @@ function loadPosts(page = 1) {
             <p>${article.description}</p>
             <a href="${article.link}">Read More →</a>
         `;
+
+        const openArticle = () => {
+            window.location.href = article.link;
+        };
+
+        card.addEventListener("click", (event) => {
+            if (event.target.closest("a")) return;
+            openArticle();
+        });
+
+        card.addEventListener("keydown", (event) => {
+            if (event.key === "Enter" || event.key === " ") {
+                event.preventDefault();
+                openArticle();
+            }
+        });
 
         container.appendChild(card);
     });

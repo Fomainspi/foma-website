@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Linux for DevOps Beginners | FOMA</title>
+    <meta name="description" content="Linux for DevOps beginners: understand the Linux file system, commands, permissions, processes, networking, and cloud-native relevance.">
+    <meta name="keywords" content="Linux for DevOps, Linux commands, file permissions, process management, Linux networking, Docker, Kubernetes, cloud">
+    <meta name="author" content="FOMA">
+    <meta property="og:title" content="Linux for DevOps Beginners | FOMA">
+    <meta property="og:description" content="Learn essential Linux skills every DevOps beginner needs to manage servers, containers, and cloud systems.">
+    <meta property="og:type" content="article">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Open+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/styles.css">
+    <link rel="stylesheet" href="../css/blog-post.css">
+    <style>
+        .post-section p {
+            margin-bottom: 24px;
+        }
+    </style>
+</head>
+<body>
+
+<div style="text-align: center; padding: 20px; background: black; color: white;">
+    <a href="../index.html" style="background: #64ffda; color: black; padding: 10px 20px; text-decoration: none; border-radius: 4px; font-weight: 500;">Back to Home</a>
+</div>
+
+<article class="blog-post-article">
+    <header class="post-header">
+        <div class="post-header-content">
+            <span class="post-category">Linux</span>
+            <h1 class="post-title">Linux for DevOps Beginners</h1>
+            <div class="post-meta">
+                <span class="post-author">By FOMA</span>
+                <span class="post-date">April 4, 2026</span>
+                <span class="post-read-time">9 min read</span>
+            </div>
+            <img src="../images/linux.png" alt="Linux system administration environment for DevOps beginners" class="post-featured-image">
+        </div>
+    </header>
+
+    <div class="post-content">
+        <div class="article">
+            <section class="post-section">
+                <h2>Introduction</h2>
+                <p>
+                    Linux is one of the most important foundations for modern DevOps work. Most cloud servers, containers,
+                    and automation environments run on Linux. If you are starting your DevOps journey, strong Linux basics
+                    will help you deploy faster, debug confidently, and understand production systems at a deeper level.
+                </p>
+            </section>
+
+            <section class="post-section">
+                <h2>1. What Is Linux and Why It Is Important in DevOps</h2>
+                <p>
+                    Linux is an open-source operating system used to run applications, services, and infrastructure.
+                    In DevOps, engineers rely on Linux for scripting, server administration, CI/CD pipelines, and cloud operations.
+                </p>
+                <ul>
+                    <li>Most cloud virtual machines use Linux distributions.</li>
+                    <li>Container platforms like Docker are Linux-native by design.</li>
+                    <li>Kubernetes worker nodes commonly run Linux kernels.</li>
+                    <li>Automation tools and shell scripts are heavily Linux-oriented.</li>
+                </ul>
+            </section>
+
+            <section class="post-section">
+                <h2>2. Linux File System Structure</h2>
+                <p>
+                    Linux uses a single-root directory model starting from <strong>/</strong>. Understanding standard directories
+                    makes troubleshooting much easier in real DevOps environments.
+                </p>
+                <ul>
+                    <li><strong>/etc</strong>: System and service configuration files.</li>
+                    <li><strong>/var</strong>: Logs, cache, and changing runtime data.</li>
+                    <li><strong>/home</strong>: User home directories.</li>
+                    <li><strong>/usr</strong>: User-level binaries and libraries.</li>
+                    <li><strong>/opt</strong>: Optional software packages.</li>
+                    <li><strong>/tmp</strong>: Temporary files.</li>
+                </ul>
+            </section>
+
+            <section class="post-section">
+                <h2>3. Essential Linux Commands</h2>
+                <p>
+                    These commands are part of daily DevOps operations for inspection, automation, and diagnostics:
+                </p>
+                <ul>
+                    <li><strong>pwd, ls, cd</strong>: Navigate and inspect directories.</li>
+                    <li><strong>cat, less, tail -f</strong>: Read files and stream logs.</li>
+                    <li><strong>cp, mv, rm, mkdir</strong>: Manage files and folders.</li>
+                    <li><strong>grep, find</strong>: Search for text and files quickly.</li>
+                    <li><strong>df -h, du -sh</strong>: Check storage usage.</li>
+                    <li><strong>ssh, scp</strong>: Access and transfer data to remote servers.</li>
+                </ul>
+            </section>
+
+            <section class="post-section">
+                <h2>4. File Permissions and Ownership</h2>
+                <p>
+                    Correct permissions protect systems and services. DevOps engineers frequently adjust permissions for app files,
+                    deployment scripts, and service users.
+                </p>
+                <ul>
+                    <li><strong>chmod</strong>: Change read, write, execute permissions.</li>
+                    <li><strong>chown</strong>: Change file owner and group.</li>
+                    <li><strong>ls -l</strong>: Inspect permission bits and ownership.</li>
+                    <li>Apply least privilege so services only get required access.</li>
+                </ul>
+                <img src="../images/linuxfilepermission.jpg" alt="Linux file permission view showing owner, group, and permission bits" class="post-featured-image">
+                <img src="../images/linuxfilepermission2.jpg" alt="Linux chmod and chown command usage for secure file ownership management" class="post-featured-image">
+            </section>
+
+            <section class="post-section">
+                <h2>5. Process Management</h2>
+                <p>
+                    In production, you must monitor and control running services. Linux process tools help you detect failures,
+                    stop runaway jobs, and keep critical applications healthy.
+                </p>
+                <ul>
+                    <li><strong>ps aux</strong> and <strong>top</strong>: List active processes.</li>
+                    <li><strong>kill</strong> and <strong>pkill</strong>: Stop problematic processes.</li>
+                    <li><strong>systemctl status/start/stop/restart</strong>: Manage systemd services.</li>
+                    <li><strong>journalctl</strong>: Read service logs for debugging incidents.</li>
+                </ul>
+                <img src="../images/linuxprocess.jpg" alt="Linux process monitoring dashboard displaying active services and resource usage" class="post-featured-image">
+            </section>
+
+            <section class="post-section">
+                <h2>6. Networking Basics</h2>
+                <p>
+                    DevOps depends on networking knowledge to expose applications, secure ports, and troubleshoot connectivity.
+                    You should be comfortable with interfaces, DNS, and firewall checks.
+                </p>
+                <ul>
+                    <li><strong>ip a</strong>: Display network interfaces and IP addresses.</li>
+                    <li><strong>ping</strong>: Test reachability.</li>
+                    <li><strong>curl</strong>: Validate HTTP endpoints and APIs.</li>
+                    <li><strong>ss -tuln</strong>: Check listening ports.</li>
+                    <li><strong>dig/nslookup</strong>: Troubleshoot DNS resolution.</li>
+                </ul>
+                <img src="../images/linuxnetworking.jpg" alt="Linux networking commands validating connectivity, DNS, and open ports" class="post-featured-image">
+            </section>
+
+            <section class="post-section">
+                <h2>7. Why Linux Is Critical in DevOps (Docker, Kubernetes, Cloud)</h2>
+                <p>
+                    Linux is the common layer behind modern delivery platforms. Docker containers use Linux kernel features,
+                    Kubernetes clusters run Linux-based workloads, and cloud systems rely on Linux instances for scale.
+                </p>
+                <ul>
+                    <li>Docker uses namespaces and cgroups from Linux internals.</li>
+                    <li>Kubernetes operations often involve Linux-level debugging.</li>
+                    <li>Cloud automation scripts and CI agents commonly run on Linux.</li>
+                    <li>Security hardening in production starts with Linux best practices.</li>
+                </ul>
+            </section>
+
+            <section class="post-section">
+                <h2>Conclusion</h2>
+                <p>
+                    Linux is not optional for DevOps; it is a core skill that powers containerization, orchestration,
+                    automation, and cloud delivery. Focus on filesystem basics, command-line fluency, permissions,
+                    process handling, and networking fundamentals. Once these are solid, your Docker, Kubernetes,
+                    and cloud workflows become much easier to understand and manage.
+                </p>
+            </section>
+
+            <section class="post-cta">
+                <div class="cta-card">
+                    <h3>Grow Your Linux DevOps Skills</h3>
+                    <p>Practice these fundamentals daily to move faster in Docker, Kubernetes, and cloud workflows.</p>
+                    <a href="../blog.html" class="cta-button">Back to Blog</a>
+                </div>
+            </section>
+        </div>
+    </div>
+</article>
+
+<script src="../js/translations.js"></script>
+<script src="../js/main.js"></script>
+
+</body>
+</html>

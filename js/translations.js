@@ -47,6 +47,8 @@ const translations = {
         post_05_desc: "Learn core AWS services and how to architect scalable, reliable cloud solutions.",
         post_06_title: "Linux System Administration Basics",
         post_06_desc: "Master essential Linux commands and system administration skills for DevOps engineers.",
+        post_09_title: "Linux for DevOps Beginners",
+        post_09_desc: "Learn essential Linux skills for DevOps engineers.",
         post_07_title: "Container Security Best Practices",
         post_07_desc: "Learn how to secure your containerized applications and cloud infrastructure.",
         post_08_title: "Kubernetes Networking Deep Dive",
@@ -102,6 +104,8 @@ const translations = {
         post_05_desc: "Apprenez les services AWS essentiels et comment concevoir des solutions cloud scalables et fiables.",
         post_06_title: "Bases de l'administration système Linux",
         post_06_desc: "Maîtrisez les commandes Linux essentielles et les compétences d'administration système pour les ingénieurs DevOps.",
+        post_09_title: "Linux pour les débutants DevOps",
+        post_09_desc: "Apprenez les compétences Linux essentielles pour les ingénieurs DevOps.",
         post_07_title: "Bonnes pratiques de sécurité des conteneurs",
         post_07_desc: "Apprenez à sécuriser vos applications conteneurisées et votre infrastructure cloud.",
         post_08_title: "Plongée profonde dans la mise en réseau Kubernetes",
@@ -241,6 +245,22 @@ const blogPosts = [
         date: "2026-03-12",
         author: "FOMA",
         image: "images/kubernetes.png",
+        featured: false
+    },
+    {
+        id: 9,
+        title: {
+            en: translations.en.post_09_title,
+            fr: translations.fr.post_09_title
+        },
+        description: {
+            en: translations.en.post_09_desc,
+            fr: translations.fr.post_09_desc
+        },
+        category: "linux",
+        date: "2026-04-04",
+        author: "FOMA",
+        image: "images/linux.png",
         featured: false
     }
 ];

@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Docker Basics | FOMA</title>
+    <meta name="description" content="Beginner-friendly Docker basics for DevOps: containers vs VMs, core commands, images, and workflows.">
+    <meta name="author" content="FOMA">
+    <meta property="og:title" content="Docker Basics | FOMA">
+    <meta property="og:description" content="Learn Docker fundamentals and why containers are critical in modern DevOps.">
+    <meta property="og:type" content="article">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Open+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/styles.css">
+    <link rel="stylesheet" href="../css/blog-post.css">
+</head>
+<body>
+<div style="text-align: center; padding: 20px; background: black; color: white;">
+    <a href="../index.html" style="background: #64ffda; color: black; padding: 10px 20px; text-decoration: none; border-radius: 4px; font-weight: 500;">Back to Home</a>
+</div>
+<article class="blog-post-article">
+    <header class="post-header">
+        <div class="post-header-content">
+            <span class="post-category">Docker</span>
+            <h1 class="post-title">Docker Basics</h1>
+            <div class="post-meta">
+                <span class="post-author">By FOMA</span>
+                <span class="post-date">April 4, 2026</span>
+                <span class="post-read-time">8 min read</span>
+            </div>
+            <img src="../images/docker.png" alt="Docker containers running isolated services for application deployment" class="post-featured-image">
+        </div>
+    </header>
+    <div class="post-content">
+        <div class="article">
+            <section class="post-section">
+                <h2>What Is Docker</h2>
+                <p>Docker is a platform that packages applications and their dependencies into containers. Containers run consistently across laptops, test servers, and production environments.</p>
+                <p>For DevOps teams, Docker reduces environment mismatch and speeds up delivery pipelines.</p>
+            </section>
+            <section class="post-section">
+                <h2>Containers vs Virtual Machines</h2>
+                <p>Virtual machines include a full guest operating system, while containers share the host kernel. This makes containers lighter and faster to start.</p>
+                <ul>
+                    <li>VMs: heavier, stronger isolation, slower startup</li>
+                    <li>Containers: lightweight, portable, quick startup</li>
+                    <li>Both are useful depending on security and performance needs</li>
+                </ul>
+            </section>
+            <section class="post-section">
+                <h2>Basic Docker Commands</h2>
+                <div class="code-block"><code>docker --version<br>docker pull nginx<br>docker images<br>docker run -d -p 8080:80 nginx<br>docker ps<br>docker stop &lt;container_id&gt;<br>docker rm &lt;container_id&gt;</code></div>
+                <p>These commands cover image download, container start, inspection, and cleanup.</p>
+            </section>
+            <section class="post-section">
+                <h2>Docker Images and Containers</h2>
+                <p>An image is a read-only template. A container is a running instance of that image. You can run multiple containers from one image with different settings.</p>
+                <p>Use a Dockerfile to define how your image is built so the process is repeatable in CI/CD.</p>
+            </section>
+            <section class="post-section">
+                <h2>Why Docker Is Important in DevOps</h2>
+                <ul>
+                    <li>Standardized environments from development to production</li>
+                    <li>Faster onboarding and deployment consistency</li>
+                    <li>Easy integration with CI/CD pipelines and Kubernetes</li>
+                    <li>Better scaling and rollback reliability</li>
+                </ul>
+                <p>Docker is a core building block for cloud-native DevOps workflows.</p>
+            </section>
+            <section class="post-cta">
+                <div class="cta-card">
+                    <h3>Next Step</h3>
+                    <p>Continue with Kubernetes to orchestrate Docker containers at scale.</p>
+                    <a href="../blog.html" class="cta-button">Back to Blog</a>
+                </div>
+            </section>
+        </div>
+    </div>
+</article>
+<script src="../js/translations.js"></script>
+<script src="../js/main.js"></script>
+</body>
+</html>

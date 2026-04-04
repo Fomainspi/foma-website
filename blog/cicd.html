@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CI/CD Pipelines with Jenkins | FOMA</title>
+    <meta name="description" content="Build reliable CI/CD pipelines with Jenkins for faster testing and deployment cycles.">
+    <meta name="author" content="FOMA">
+    <meta property="og:title" content="CI/CD Pipelines with Jenkins | FOMA">
+    <meta property="og:description" content="Build reliable CI/CD pipelines with Jenkins for faster testing and deployment cycles.">
+    <meta property="og:type" content="article">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Open+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/styles.css">
+    <link rel="stylesheet" href="../css/blog-post.css">
+</head>
+<body>
+<div style="text-align: center; padding: 20px; background: black; color: white;">
+    <a href="../index.html" style="background: #64ffda; color: black; padding: 10px 20px; text-decoration: none; border-radius: 4px; font-weight: 500;">Back to Home</a>
+</div>
+<article class="blog-post-article">
+    <header class="post-header">
+        <div class="post-header-content">
+            <span class="post-category">CI/CD</span>
+            <h1 class="post-title">CI/CD Pipelines with Jenkins</h1>
+            <div class="post-meta">
+                <span class="post-author">By FOMA</span>
+                <span class="post-date">March 22, 2026</span>
+                <span class="post-read-time">8 min read</span>
+            </div>
+            <img src="../images/cicd.png" alt="CI/CD automation pipeline from commit to deployment" class="post-featured-image">
+        </div>
+    </header>
+    <div class="post-content">
+        <section class="post-section">
+            <h2>What CI/CD Solves</h2>
+            <p>CI/CD reduces manual release risk by automating build, test, and deployment steps after each commit.</p>
+        </section>
+        <section class="post-section">
+            <h2>Pipeline Stages</h2>
+            <ul>
+                <li>Build and dependency checks</li>
+                <li>Unit and integration tests</li>
+                <li>Container build and image scan</li>
+                <li>Staging and production deployment</li>
+            </ul>
+        </section>
+        <section class="post-section">
+            <h2>Simple Jenkinsfile</h2>
+            <div class="code-block"><code>pipeline {<br>  agent any<br>  stages {<br>    stage('Build') { steps { sh 'npm run build' } }<br>    stage('Test') { steps { sh 'npm test' } }<br>    stage('Deploy') { steps { sh './deploy.sh' } }<br>  }<br>}</code></div>
+        </section>
+        <section class="post-cta">
+            <div class="cta-card">
+                <h3>Automate Your Releases</h3>
+                <p>Learn to design robust deployment workflows across environments.</p>
+                <a href="../blog.html" class="cta-button">Back to Blog</a>
+            </div>
+        </section>
+    </div>
+</article>
+<script src="../js/translations.js"></script>
+<script src="../js/main.js"></script>
+</body>
+</html>

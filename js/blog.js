@@ -6,6 +6,19 @@ let currentPage = 1;
 const postsPerPage = 6;
 let filteredPosts = [...blogPosts];
 
+// Maps blog post IDs to their published article pages.
+const postRoutes = {
+    1: "blog/docker-basics.html",
+    2: "blog/kubernetes-intro.html",
+    3: "blog/terraform.html",
+    4: "blog/cicd-pipeline.html",
+    5: "blog/cloud.html",
+    6: "blog/linux.html",
+    7: "blog/devsecops.html",
+    8: "blog/kubernetes-networking.html",
+    9: "blog/linux-devops.html"
+};
+
 // Initialize blog page
 function initializeBlog() {
     loadBlogPosts();
@@ -160,14 +173,44 @@ function addPostCardListeners() {
             openBlogPost(postId);
         });
     });
+
+    const postCards = document.querySelectorAll('.blog-card');
+    postCards.forEach(card => {
+        const btn = card.querySelector('.read-more-btn');
+        if (!btn) return;
+
+        card.style.cursor = 'pointer';
+        card.setAttribute('role', 'link');
+        card.setAttribute('tabindex', '0');
+
+        const postId = btn.getAttribute('data-post-id');
+        const openPost = () => openBlogPost(postId);
+
+        card.addEventListener('click', function(e) {
+            if (e.target.closest('.read-more-btn')) return;
+            openPost();
+        });
+
+        card.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                openPost();
+            }
+        });
+    });
 }
 
 // Open blog post (in a real app, would navigate)
 function openBlogPost(postId) {
     const post = blogPosts.find(p => p.id == postId);
     if (post) {
-        // For now, show an alert. In production, navigate to post page
-        alert(`${post.title[currentLang]}\n\nThis would open the full blog post page in a production environment.`);
+        const route = postRoutes[Number(postId)];
+        if (route) {
+            window.location.href = route;
+            return;
+        }
+
+        alert("This article page is not published yet.");
     }
 }
 

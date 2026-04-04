@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Container Security Best Practices | FOMA</title>
+    <meta name="description" content="Learn DevSecOps and container security best practices for safer cloud-native delivery.">
+    <meta name="author" content="FOMA">
+    <meta property="og:title" content="Container Security Best Practices | FOMA">
+    <meta property="og:description" content="Learn DevSecOps and container security best practices for safer cloud-native delivery.">
+    <meta property="og:type" content="article">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Open+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/styles.css">
+    <link rel="stylesheet" href="../css/blog-post.css">
+</head>
+<body>
+<div style="text-align: center; padding: 20px; background: black; color: white;">
+    <a href="../index.html" style="background: #64ffda; color: black; padding: 10px 20px; text-decoration: none; border-radius: 4px; font-weight: 500;">Back to Home</a>
+</div>
+<article class="blog-post-article">
+    <header class="post-header">
+        <div class="post-header-content">
+            <span class="post-category">DevSecOps</span>
+            <h1 class="post-title">Container Security Best Practices</h1>
+            <div class="post-meta">
+                <span class="post-author">By FOMA</span>
+                <span class="post-date">March 15, 2026</span>
+                <span class="post-read-time">9 min read</span>
+            </div>
+            <img src="../images/devsecops.png" alt="DevSecOps security controls integrated across software delivery pipeline" class="post-featured-image">
+        </div>
+    </header>
+    <div class="post-content">
+        <section class="post-section">
+            <h2>Shift Security Left</h2>
+            <p>DevSecOps embeds security checks in every stage of delivery instead of treating security as a final gate.</p>
+        </section>
+        <section class="post-section">
+            <h2>Container Security Checklist</h2>
+            <ul>
+                <li>Use trusted base images and pin versions</li>
+                <li>Scan images for CVEs on each build</li>
+                <li>Run containers as non-root users</li>
+                <li>Enforce signed images and admission policies</li>
+            </ul>
+        </section>
+        <section class="post-section">
+            <h2>CI Integration Example</h2>
+            <div class="code-block"><code>trivy image my-app:latest<br>grype my-app:latest<br>cosign sign my-app:latest</code></div>
+        </section>
+        <section class="post-cta">
+            <div class="cta-card">
+                <h3>Secure by Default</h3>
+                <p>Build safer release pipelines with practical DevSecOps patterns.</p>
+                <a href="../blog.html" class="cta-button">Back to Blog</a>
+            </div>
+        </section>
+    </div>
+</article>
+<script src="../js/translations.js"></script>
+<script src="../js/main.js"></script>
+</body>
+</html>
