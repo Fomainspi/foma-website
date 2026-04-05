@@ -207,4 +207,81 @@ function filterCategory(category) {
 // INIT
 window.addEventListener("load", () => {
     loadPosts();
+    loadArticlesFromCMS();
 });
+
+async function loadArticlesFromCMS() {
+    try {
+        const res = await fetch("http://localhost:1337/api/articles?populate=*");
+        const result = await res.json();
+
+        const articles = Array.isArray(result.data) ? result.data : [];
+
+        const container = document.getElementById("latest-posts");
+
+        if (!container) return;
+
+        const categoryRoutes = {
+            devops: "training/devops.html",
+            docker: "training/docker.html",
+            kubernetes: "training/kubernetes.html",
+            cicd: "training/cicd.html",
+            linux: "training/linux.html",
+            terraform: "training/terraform.html",
+            ansible: "training/ansible.html"
+        };
+
+        articles.forEach(article => {
+            const articleId = article?.id || article?.attributes?.id;
+            const data = article?.attributes || article;
+            const category = (data?.category || "").toString().toLowerCase();
+            const articleLink = categoryRoutes[category] || "#";
+
+            const cmsImageUrl =
+                data?.image?.url ||
+                data?.image?.data?.attributes?.url ||
+                "";
+
+            const imageUrl = cmsImageUrl
+                ? "http://localhost:1337" + cmsImageUrl
+                : "images/devops.jpg";
+
+            const card = document.createElement("div");
+            card.className = "blog-card";
+            card.setAttribute("data-category", category || "devops");
+            card.setAttribute("role", "link");
+            card.setAttribute("tabindex", "0");
+
+            const openArticle = () => {
+                if (!articleId) return;
+                window.location.href = `blog/cms-article.html?id=${data.documentId}`;
+            };
+
+            // Make entire card clickable like static cards
+            card.style.cursor = "pointer";
+            card.addEventListener("click", (event) => {
+                if (event.target.closest("a")) return;
+                openArticle();
+            });
+
+            card.addEventListener("keydown", (event) => {
+                if (event.key === "Enter" || event.key === " ") {
+                    event.preventDefault();
+                    openArticle();
+                }
+            });
+
+            card.innerHTML = `
+                <img src="${imageUrl}" alt="${data?.title || "DevOps Article"}">
+                <h2>${data?.title || "DevOps Article"}</h2>
+                <p>${data?.description || "Explore this DevOps article."}</p>
+                <a href="${articleId ? `blog/cms-article.html?id=${articleId}` : articleLink}">Read More →</a>
+            `;
+
+            container.appendChild(card);
+        });
+
+    } catch (error) {
+        console.error("CMS error:", error);
+    }
+}

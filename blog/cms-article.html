@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>FOMA Article</title>
+    <link rel="stylesheet" href="../css/styles.css">
+</head>
+
+<body>
+
+<div class="article" id="article-container">
+    <h1>Loading...</h1>
+</div>
+
+<script>
+    const params = new URLSearchParams(window.location.search);
+    const id = params.get("id");
+
+    async function loadArticle() {
+        try {
+            const res = await fetch(`http://localhost:1337/api/articles?filters[documentId][$eq]=${id}&populate=*`);
+            const result = await res.json();
+
+            const article = result.data[0];
+
+            const container = document.getElementById("article-container");
+
+            if (!article) {
+                container.innerHTML = "<h2>Article not found</h2>";
+                return;
+            }
+
+            const data = article;
+
+            container.innerHTML = `
+                <h1>${data.title}</h1>
+                <p>${data.description}</p>
+                <div>${formatContent(data.content)}</div>
+            `;
+
+        } catch (err) {
+            console.error("Error loading article:", err);
+            document.getElementById("article-container").innerHTML =
+                "<h2>Unable to load the article, please try again.</h2>";
+        }
+    }
+
+    function formatContent(content) {
+        if (!content) return "";
+
+        return content.map(block => {
+            if (block.type === "heading") {
+                return `<h2>${block.children[0].text}</h2>`;
+            }
+            if (block.type === "paragraph") {
+                return `<p>${block.children.map(c => c.text).join("")}</p>`;
+            }
+            return "";
+        }).join("");
+    }
+
+    loadArticle();
+</script>
+
+</body>
+</html>
