@@ -16,7 +16,8 @@ const postRoutes = {
     6: "blog/linux.html",
     7: "blog/devsecops.html",
     8: "blog/kubernetes-networking.html",
-    9: "blog/linux-devops.html"
+    9: "blog/linux-devops.html",
+    10: "blog/docker-revolutionizing-software-development-and-deployment.html"
 };
 
 // Initialize blog page
@@ -236,6 +237,13 @@ function applyTranslations() {
             } else {
                 element.textContent = translations[currentLang][key];
             }
+        }
+    });
+
+    document.querySelectorAll('[data-lang-placeholder]').forEach(element => {
+        const key = element.getAttribute('data-lang-placeholder');
+        if (translations[currentLang] && translations[currentLang][key]) {
+            element.placeholder = translations[currentLang][key];
         }
     });
 

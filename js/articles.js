@@ -16,6 +16,14 @@ const articles = [
         date: "2026-04-04"
     },
     {
+        title: "Docker: Revolutionizing Software Development and Deployment",
+        description: "Discover how Docker transforms development and deployment with consistent, portable containers.",
+        category: "docker",
+        image: "images/docker2.png",
+        link: "blog/docker-revolutionizing-software-development-and-deployment.html",
+        date: "2026-04-06"
+    },
+    {
         title: "Kubernetes Introduction",
         description: "Understand Kubernetes core concepts for modern application deployment.",
         category: "kubernetes",

@@ -89,6 +89,13 @@ function applyTranslations() {
             }
         }
     });
+
+    document.querySelectorAll("[data-lang-placeholder]").forEach(element => {
+        const key = element.getAttribute("data-lang-placeholder");
+        if (translations && translations[currentLang] && translations[currentLang][key]) {
+            element.placeholder = translations[currentLang][key];
+        }
+    });
 }
 
 /* ================= BLOG SYSTEM ================= */
@@ -212,7 +219,7 @@ window.addEventListener("load", () => {
 
 async function loadArticlesFromCMS() {
     try {
-        const res = await fetch("http://localhost:1337/api/articles?populate=*");
+        const res = await fetch("http://admin.foma.life/api/articles?populate=*");
         const result = await res.json();
 
         const articles = Array.isArray(result.data) ? result.data : [];
@@ -243,7 +250,7 @@ async function loadArticlesFromCMS() {
                 "";
 
             const imageUrl = cmsImageUrl
-                ? "http://localhost:1337" + cmsImageUrl
+                ? "http://admin.foma.life" + cmsImageUrl
                 : "images/devops.jpg";
 
             const card = document.createElement("div");
