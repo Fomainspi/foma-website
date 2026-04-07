@@ -25,6 +25,7 @@ const translations = {
         blog_cicd: "CI/CD",
         blog_cloud: "Cloud",
         blog_linux: "Linux",
+        blog_devops: "DevOps",
         blog_devsecops: "DevSecOps",
         blog_load_more: "Load More Posts",
         blog_no_posts: "No posts found",
@@ -32,7 +33,7 @@ const translations = {
         // Blog Posts
         read_more: "Read More",
         article1_title: "Introduction to DevOps",
-        article1_desc: "Learn the fundamentals of DevOps.",
+        article1_desc: "Understand DevOps culture, lifecycle, tools, and benefits for modern software delivery.",
 
         // Sample Blog Posts
         post_01_title: "Docker Fundamentals: Containerize Your Applications",
@@ -126,6 +127,7 @@ const translations = {
         blog_cicd: "CI/CD",
         blog_cloud: "Cloud",
         blog_linux: "Linux",
+        blog_devops: "DevOps",
         blog_devsecops: "DevSecOps",
         blog_load_more: "Charger plus d'articles",
         blog_no_posts: "Aucun article trouvé",
@@ -133,7 +135,7 @@ const translations = {
         // Blog Posts
         read_more: "Lire la suite",
         article1_title: "Introduction à DevOps",
-        article1_desc: "Apprenez les fondamentaux de DevOps.",
+        article1_desc: "Comprenez la culture DevOps, son cycle de vie, ses outils et ses avantages pour la livraison logicielle moderne.",
 
         // Sample Blog Posts
         post_01_title: "Fondamentaux Docker : Conteneurisez vos applications",
@@ -365,6 +367,22 @@ const blogPosts = [
         date: "2026-04-06",
         author: "FOMA",
         image: "images/docker2.png",
+        featured: true
+    },
+    {
+        id: 11,
+        title: {
+            en: translations.en.article1_title,
+            fr: translations.fr.article1_title
+        },
+        description: {
+            en: translations.en.article1_desc,
+            fr: translations.fr.article1_desc
+        },
+        category: "devops",
+        date: "2026-04-01",
+        author: "FOMA",
+        image: "images/devops.jpg",
         featured: true
     }
 ];

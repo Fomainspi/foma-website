@@ -1,7 +1,7 @@
 const articles = [
     {
         title: "Introduction to DevOps",
-        description: "Learn the fundamentals of DevOps.",
+        description: "Understand DevOps culture, lifecycle, tools, and benefits for modern software delivery.",
         category: "devops",
         image: "images/devops.jpg",
         link: "blog/article1.html",

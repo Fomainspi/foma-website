@@ -102,7 +102,7 @@ function applyTranslations() {
 
 // Pagination config
 let currentPage = 1;
-const postsPerPage = 100;
+const postsPerPage = 4;
 
 // Load posts (latest + paginated)
 function loadPosts(page = 1, category = "all") {
@@ -224,19 +224,24 @@ function filterCategory(category) {
 // INIT
 window.addEventListener("load", () => {
     loadPosts();
+
+    if (!document.getElementById("latest-posts") || typeof articles !== "undefined") {
+        return;
+    }
+
     loadArticlesFromCMS();
 });
 
 async function loadArticlesFromCMS() {
+    const container = document.getElementById("latest-posts");
+
+    if (!container) return;
+
     try {
-        const res = await fetch("http://admin.foma.life/api/articles?populate=*");
+        const res = await fetch("https://admin.foma.life/api/articles?populate=*");
         const result = await res.json();
 
         const articles = Array.isArray(result.data) ? result.data : [];
-
-        const container = document.getElementById("latest-posts");
-
-        if (!container) return;
 
         const categoryRoutes = {
             devops: "training/devops.html",
@@ -251,7 +256,8 @@ async function loadArticlesFromCMS() {
         articles.forEach(article => {
             const articleId = article?.id || article?.attributes?.id;
             const data = article?.attributes || article;
-            const category = (data?.category || "").toString().toLowerCase();
+            const rawCategory = (data?.category || "").toString().toLowerCase().trim();
+            const category = rawCategory.replace(/[\s/-]+/g, "");
             const articleLink = categoryRoutes[category] || "#";
 
             const cmsImageUrl =
@@ -260,7 +266,7 @@ async function loadArticlesFromCMS() {
                 "";
 
             const imageUrl = cmsImageUrl
-                ? "http://admin.foma.life" + cmsImageUrl
+                ? "https://admin.foma.life" + cmsImageUrl
                 : "images/devops.jpg";
 
             const card = document.createElement("div");
@@ -269,9 +275,11 @@ async function loadArticlesFromCMS() {
             card.setAttribute("role", "link");
             card.setAttribute("tabindex", "0");
 
+            const articleDocumentId = data.documentId || articleId;
+
             const openArticle = () => {
-                if (!articleId) return;
-                window.location.href = `blog/cms-article.html?id=${data.documentId}`;
+                if (!articleDocumentId) return;
+                window.location.href = `blog/cms-article.html?id=${articleDocumentId}`;
             };
 
             // Make entire card clickable like static cards
@@ -292,7 +300,7 @@ async function loadArticlesFromCMS() {
                 <img src="${imageUrl}" alt="${data?.title || "DevOps Article"}">
                 <h2>${data?.title || "DevOps Article"}</h2>
                 <p>${data?.description || "Explore this DevOps article."}</p>
-                <a href="${articleId ? `blog/cms-article.html?id=${articleId}` : articleLink}">Read More →</a>
+                <a href="${articleDocumentId ? `blog/cms-article.html?id=${articleDocumentId}` : articleLink}">Read More →</a>
             `;
 
             container.appendChild(card);

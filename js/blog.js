@@ -4,7 +4,7 @@ let currentLang = "en";
 let currentCategory = "all";
 let currentPage = 1;
 const postsPerPage = 6;
-let filteredPosts = [...blogPosts];
+let filteredPosts = sortPostsByDate(blogPosts);
 
 // Maps blog post IDs to their published article pages.
 const postRoutes = {
@@ -17,8 +17,13 @@ const postRoutes = {
     7: "blog/devsecops.html",
     8: "blog/kubernetes-networking.html",
     9: "blog/linux-devops.html",
-    10: "blog/docker-revolutionizing-software-development-and-deployment.html"
+    10: "blog/docker-revolutionizing-software-development-and-deployment.html",
+    11: "blog/article1.html"
 };
+
+function sortPostsByDate(posts) {
+    return [...posts].sort((a, b) => new Date(b.date) - new Date(a.date));
+}
 
 // Initialize blog page
 function initializeBlog() {
@@ -79,11 +84,11 @@ function performSearch() {
     if (searchTerm === '') {
         filteredPosts = filterPostsByCategory(blogPosts, currentCategory);
     } else {
-        filteredPosts = blogPosts.filter(post => {
+        filteredPosts = sortPostsByDate(blogPosts.filter(post => {
             const title = post.title[currentLang].toLowerCase();
             const description = post.description[currentLang].toLowerCase();
             return title.includes(searchTerm) || description.includes(searchTerm);
-        });
+        }));
     }
 
     currentPage = 1;
@@ -92,10 +97,13 @@ function performSearch() {
 
 // Filter posts by category
 function filterPostsByCategory(posts, category) {
+    const sortedPosts = sortPostsByDate(posts);
+
     if (category === 'all') {
-        return posts;
+        return sortedPosts;
     }
-    return posts.filter(post => post.category === category);
+
+    return sortedPosts.filter(post => post.category === category);
 }
 
 // Filter and load posts
