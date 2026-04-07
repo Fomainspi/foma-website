@@ -63,5 +63,4 @@ const articles = [
         link: "blog/terraform.html",
         date: "2026-03-25"
     }
-
 ];

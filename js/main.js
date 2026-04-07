@@ -102,20 +102,35 @@ function applyTranslations() {
 
 // Pagination config
 let currentPage = 1;
-const postsPerPage = 4;
+const postsPerPage = 100;
 
 // Load posts (latest + paginated)
-function loadPosts(page = 1) {
+function loadPosts(page = 1, category = "all") {
     const container = document.getElementById("latest-posts");
     if (!container || typeof articles === "undefined") return;
 
     container.innerHTML = "";
 
-    const sorted = [...articles].sort((a, b) => new Date(b.date) - new Date(a.date));
+    const activeCategory = arguments.length < 2
+        ? (container.dataset.activeCategory || "all")
+        : category;
 
+    container.dataset.activeCategory = activeCategory;
+
+    // Sort articles by date (latest first)
+    let filtered = [...articles].sort((a, b) => new Date(b.date) - new Date(a.date));
+
+    // Apply category filter FIRST
+    if (activeCategory !== "all") {
+        filtered = filtered.filter(a =>
+            (a.category || "").toLowerCase() === activeCategory.toLowerCase()
+        );
+    }
+
+    // Apply pagination AFTER filtering
     const start = (page - 1) * postsPerPage;
     const end = start + postsPerPage;
-    const paginated = sorted.slice(start, end);
+    const paginated = filtered.slice(start, end);
 
     if (paginated.length === 0) {
         container.innerHTML = "<p style='text-align:center;'>No articles found.</p>";
@@ -125,6 +140,8 @@ function loadPosts(page = 1) {
     paginated.forEach(article => {
         const card = document.createElement("div");
         card.className = "blog-card";
+
+        // Keep category for filtering system
         card.setAttribute("data-category", article.category);
         card.setAttribute("role", "link");
         card.setAttribute("tabindex", "0");
@@ -133,7 +150,7 @@ function loadPosts(page = 1) {
         card.innerHTML = `
             <img src="${article.image}" loading="lazy" alt="${article.title}">
             <h2>${article.title}</h2>
-            <p>${article.description}</p>
+            <p>${article.description || "No description available"}</p>
             <a href="${article.link}">Read More →</a>
         `;
 
@@ -156,7 +173,7 @@ function loadPosts(page = 1) {
         container.appendChild(card);
     });
 
-    renderPagination(sorted.length);
+    renderPagination(filtered.length);
 }
 
 // Pagination buttons
@@ -200,15 +217,8 @@ function searchArticles() {
 
 // Category filter
 function filterCategory(category) {
-    const cards = document.querySelectorAll(".blog-card");
-
-    cards.forEach(card => {
-        if (category === "all" || card.dataset.category === category) {
-            card.style.display = "block";
-        } else {
-            card.style.display = "none";
-        }
-    });
+    currentPage = 1;
+    loadPosts(1, category);
 }
 
 // INIT
