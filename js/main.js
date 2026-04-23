@@ -1,6 +1,17 @@
 let currentLang = localStorage.getItem('preferredLanguage') || "en";
-const isNestedPage = window.location.pathname.includes('/blog/') || window.location.pathname.includes('/training/');
-const pathPrefix = isNestedPage ? "../" : "./";
+const pathname = window.location.pathname;
+let pathPrefix = "./";
+
+if (pathname.includes('/projects/')) {
+    pathPrefix = "../../";
+} else if (pathname.includes('/blog/') || pathname.includes('/training/')) {
+    pathPrefix = "../";
+}
+const isBlogArticlePage = !!document.querySelector('.blog-post-article');
+
+if (isBlogArticlePage) {
+    document.body.classList.add('is-blog-article');
+}
 
 // Load header dynamically (use relative path for local server)
 fetch(`${pathPrefix}components/header.html?t=${Date.now()}`)
@@ -39,8 +50,59 @@ fetch(`${pathPrefix}components/header.html?t=${Date.now()}`)
         }
         setupLanguageSwitcher();
         applyTranslations(); // Apply language after header loads
+        initWaitlistForm();
+        initWhatsAppFloatingButton();
     })
     .catch(error => console.error('Error loading header:', error));
+
+// Waitlist lead form: redirect to WhatsApp with pre-filled message.
+function initWaitlistForm() {
+    const waitlistForm = document.getElementById('waitlistForm');
+    if (!waitlistForm || waitlistForm.dataset.bound === 'true') return;
+
+    waitlistForm.dataset.bound = 'true';
+
+    waitlistForm.addEventListener('submit', function (event) {
+        event.preventDefault();
+
+        const fullName = document.getElementById('fullName')?.value.trim() || '';
+        const email = document.getElementById('email')?.value.trim() || '';
+        const experience = document.getElementById('experience')?.value || '';
+        const goal = document.getElementById('goal')?.value || '';
+
+        const message = [
+            "Hello, I\u2019m interested in the DevOps Bootcamp. Please send me more details.",
+            fullName ? `Name: ${fullName}` : '',
+            email ? `Email: ${email}` : '',
+            experience ? `Experience Level: ${experience}` : '',
+            goal ? `Goal: ${goal}` : ''
+        ].filter(Boolean).join('\n');
+
+        const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(message)}`;
+        window.open(whatsappUrl, '_blank', 'noopener');
+    });
+}
+
+function initWhatsAppFloatingButton() {
+    if (document.querySelector('.whatsapp-float')) return;
+
+    const message = 'Hello, I want to learn more about your DevOps training';
+    const button = document.createElement('a');
+    button.href = `https://wa.me/?text=${encodeURIComponent(message)}`;
+    button.target = '_blank';
+    button.rel = 'noopener noreferrer';
+    button.className = 'whatsapp-float';
+    button.setAttribute('aria-label', 'Chat on WhatsApp');
+    button.title = 'WhatsApp';
+    button.textContent = 'WA';
+
+    document.body.appendChild(button);
+}
+
+window.addEventListener('DOMContentLoaded', () => {
+    initWaitlistForm();
+    initWhatsAppFloatingButton();
+});
 
 // Setup language switcher in header
 function setupLanguageSwitcher() {

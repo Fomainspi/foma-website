@@ -1,0 +1,41 @@
+/* Project card extension styles for homepage project links */
+
+.project-card-link {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+}
+
+.project-card-link .feature {
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    cursor: pointer;
+}
+
+.project-card-link:hover .feature,
+.project-card-link:focus-visible .feature {
+    transform: scale(1.03);
+    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.14);
+}
+
+.project-breadcrumb {
+    max-width: 900px;
+    margin: 18px auto 0;
+    padding: 0 20px;
+    color: #b9c4d6;
+    font-size: 0.95em;
+}
+
+.project-breadcrumb a {
+    color: #64ffda;
+    text-decoration: none;
+}
+
+.project-breadcrumb a:hover {
+    text-decoration: underline;
+}
+
+@media (max-width: 768px) {
+    .project-card-link {
+        width: 100%;
+    }
+}

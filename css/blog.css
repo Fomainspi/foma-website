@@ -18,7 +18,7 @@
 .blog-back-home-btn {
     position: absolute;
     top: 20px;
-    right: 20px;
+    left: 20px;
     background: #64ffda;
     color: black;
     padding: 10px 20px;
@@ -384,6 +384,18 @@
 @media (max-width: 480px) {
     .blog-hero {
         padding: 40px 15px;
+    }
+
+    .blog-back-home-btn {
+        top: 12px;
+        left: 12px;
+        padding: 8px 14px;
+        font-size: 14px;
+    }
+
+    .blog-language-switch {
+        top: 12px;
+        right: 12px;
     }
 
     .blog-hero h1 {

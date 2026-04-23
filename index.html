@@ -12,6 +12,7 @@
 
     <!-- CSS -->
     <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/projects.css">
     <meta name="description" content="Learn DevOps, Docker, Kubernetes, Terraform, CI/CD and Cloud step by step with FOMA. Build real-world automation skills.">
     <meta name="keywords" content="DevOps, Docker, Kubernetes, Terraform, CI/CD, Cloud, Linux, GitOps, Automation">
     <meta name="author" content="FOMA">
@@ -27,66 +28,113 @@
 
 <!-- HERO -->
 <section class="hero">
-    <h2 data-lang="hero_title">Master DevOps & Automation</h2>
+    <h2 data-lang="hero_title">Become a Job-Ready DevOps Engineer in 8 Weeks</h2>
     <p data-lang="hero_desc">
-        Learn Linux, Git, Docker, Kubernetes, Terraform, Ansible, GitOps, CI/CD pipelines, and Cloud platforms through hands-on, step-by-step training designed to make you job-ready.
+        Learn Docker, Kubernetes, CI/CD, and Cloud by building real-world projects.
     </p>
-    <a href="blog.html" class="btn">Start Learning</a>
-</section>
-
-<!-- QUICK ACCESS -->
-<section class="quick-access">
-    <h2>Start Your Journey</h2>
-    <div class="quick-grid">
-        <a href="training/devops.html" class="quick-card">🚀 DevOps</a>
-        <a href="training/docker.html" class="quick-card">🐳 Docker</a>
-        <a href="training/kubernetes.html" class="quick-card">☸️ Kubernetes</a>
-        <a href="training/cicd.html" class="quick-card">⚙️ CI/CD</a>
-        <a href="training/linux.html" class="quick-card">🐧 Linux</a>
-        <a href="training/terraform.html" class="quick-card">🏗️ Terraform</a>
-        <a href="training/ansible.html" class="quick-card">📦 Ansible</a>
+    <div class="hero-actions">
+        <a href="#register" class="btn" data-lang="hero_cta_join">Join the Bootcamp</a>
+        <a href="#program" class="btn btn-secondary" data-lang="hero_cta_program">View Program</a>
     </div>
 </section>
 
-<!-- SEARCH -->
-<section style="text-align:center; padding:30px;">
-    <input 
-        type="text" 
-        id="searchInput" 
-        placeholder="Search articles..." 
-        onkeyup="searchArticles()"
-        style="padding:10px; width:300px;">
+<!-- PROGRAM -->
+<section class="quick-access" id="program">
+    <h2 data-lang="program_title">DevOps Bootcamp Program</h2>
+    <p class="section-intro" data-lang="program_intro">An intensive, project-based path to become job-ready.</p>
+    <div class="program-meta">
+        <span data-lang="program_duration">Duration: 8 Weeks</span>
+        <span data-lang="program_level">Level: Beginner to Intermediate</span>
+        <span data-lang="program_format">Format: Online + Hands-on</span>
+    </div>
+    <div class="quick-grid program-grid">
+        <a href="training/linux.html" class="quick-card program-card"><img src="images/linux.png" alt="Linux"><span data-lang="module_1">Linux Fundamentals</span></a>
+        <a href="training/devops.html" class="quick-card program-card"><img src="images/devops.jpg" alt="Git and GitHub"><span data-lang="module_2">Git &amp; GitHub</span></a>
+        <a href="training/docker.html" class="quick-card program-card"><img src="images/docker.png" alt="Docker"><span data-lang="module_3">Docker</span></a>
+        <a href="training/cicd.html" class="quick-card program-card"><img src="images/cicd.png" alt="CI CD"><span data-lang="module_4">CI/CD (Jenkins)</span></a>
+        <a href="training/kubernetes.html" class="quick-card program-card"><img src="images/kubernetes.png" alt="Kubernetes"><span data-lang="module_5">Kubernetes</span></a>
+        <a href="training/devops.html" class="quick-card program-card"><img src="images/cloud.png" alt="Cloud"><span data-lang="module_6">Cloud (AWS basics)</span></a>
+        <a href="training/devops.html" class="quick-card program-card"><img src="images/terraform.png" alt="Final project"><span data-lang="module_7">Final Project</span></a>
+    </div>
 </section>
 
-<!-- LATEST POSTS -->
+<!-- PROJECTS -->
+<section class="value" id="projects">
+    <h2 data-lang="projects_title">Build Real DevOps Projects</h2>
+    <p data-lang="projects_intro">Practice with real deployment workflows and production-style scenarios.</p>
+    <div class="features">
+        <a href="projects/cicd-pipeline/" class="project-card-link">
+            <div class="feature">
+                <img src="images/cicd.png" alt="CI CD Pipeline" class="feature-img">
+                <h3 data-lang="project_item_1">CI/CD pipeline</h3>
+            </div>
+        </a>
+        <a href="projects/docker-containerization/" class="project-card-link">
+            <div class="feature">
+                <img src="images/docker2.png" alt="Containerized applications" class="feature-img">
+                <h3 data-lang="project_item_2">Containerized applications</h3>
+            </div>
+        </a>
+        <a href="projects/kubernetes-deployment/" class="project-card-link">
+            <div class="feature">
+                <img src="images/kubernetes.png" alt="Kubernetes deployments" class="feature-img">
+                <h3 data-lang="project_item_3">Kubernetes deployments</h3>
+            </div>
+        </a>
+        <a href="projects/cloud-deployment/" class="project-card-link">
+            <div class="feature">
+                <img src="images/cloud.png" alt="Cloud deployments" class="feature-img">
+                <h3 data-lang="project_item_4">Cloud deployments</h3>
+            </div>
+        </a>
+    </div>
+</section>
+
+<!-- REGISTER -->
+<section class="newsletter" id="register">
+    <h2 data-lang="register_title">Join the Next DevOps Bootcamp</h2>
+    <p class="section-intro" data-lang="register_desc">Limited seats available. Register your interest and get full details.</p>
+    <form id="waitlistForm" class="waitlist-form">
+        <input type="text" id="fullName" required data-lang-placeholder="form_full_name" placeholder="Full Name">
+        <input type="email" id="email" required data-lang-placeholder="form_email" placeholder="Email">
+        <select id="experience" required>
+            <option value="" data-lang="form_experience">Experience Level</option>
+            <option value="Beginner" data-lang="form_beginner">Beginner</option>
+            <option value="Intermediate" data-lang="form_intermediate">Intermediate</option>
+        </select>
+        <select id="goal" required>
+            <option value="" data-lang="form_goal">Goal</option>
+            <option value="Job" data-lang="form_goal_job">Job</option>
+            <option value="Skill upgrade" data-lang="form_goal_skill">Skill upgrade</option>
+            <option value="Career change" data-lang="form_goal_career">Career change</option>
+        </select>
+        <button type="submit" data-lang="join_now">Join Now</button>
+    </form>
+</section>
+
+<!-- INSTRUCTOR -->
+<section class="cta">
+    <h2 data-lang="instructor_title">About the Instructor</h2>
+    <p class="section-intro instructor-copy" data-lang="instructor_desc">DevOps Engineer with real-world experience, passionate about mentoring and focused on practical, job-ready training.</p>
+</section>
+
+<!-- BLOG DISCOVERY -->
 <section>
-    <h2 style="text-align:center;">Latest Articles</h2>
+    <h2 style="text-align:center;" data-lang="latest_articles">Latest Articles</h2>
+    <div class="search-inline">
+        <input 
+            type="text" 
+            id="searchInput" 
+            data-lang-placeholder="search_articles"
+            placeholder="Search articles..." 
+            onkeyup="searchArticles()"
+            style="padding:10px; width:300px;">
+    </div>
     <div class="blog-container" id="latest-posts"></div>
 </section>
 
 <!-- PAGINATION -->
 <div id="pagination" style="text-align:center; margin:20px;"></div>
-
-<!-- VALUE -->
-<section class="value">
-    <h2>Why FOMA?</h2>
-    <p>
-        FOMA helps you master DevOps through real-world projects, automation,
-        and scalable system design. Learn by doing, build real systems, and become job-ready.
-    </p>
-</section>
-
-<!-- CTA -->
-<section class="cta">
-    <h2>Start Learning DevOps Today</h2>
-</section>
-
-<!-- NEWSLETTER -->
-<section class="newsletter">
-    <h2>Join the FOMA Community</h2>
-    <input type="email" placeholder="Enter your email">
-    <button>Subscribe</button>
-</section>
 
 <!-- FOOTER -->
 <footer class="footer">
@@ -96,6 +144,7 @@
         <a href="https://www.instagram.com" target="_blank">Instagram</a>
         <a href="https://github.com" target="_blank">GitHub</a>
     </div>
+    <p data-lang="office_address">Parañaque City, Philippines</p>
     <p>© 2026 FOMA — Foundation of Mastering Automation</p>
 </footer>
 

@@ -8,7 +8,7 @@
 /* Post Header */
 .post-header {
     background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
-    padding: 60px 20px;
+    padding: 24px 20px 18px;
     border-bottom: 3px solid #64ffda;
 }
 
@@ -32,7 +32,7 @@
 
 .post-title {
     font-family: 'Poppins', sans-serif;
-    font-size: 2.8em;
+    font-size: 2em;
     font-weight: 700;
     margin: 20px 0;
     line-height: 1.3;
@@ -43,7 +43,7 @@
     display: flex;
     gap: 20px;
     flex-wrap: wrap;
-    margin-bottom: 30px;
+    margin-bottom: 16px;
     font-family: 'Open Sans', sans-serif;
     color: #b0b0b0;
     font-size: 0.95em;
@@ -59,7 +59,7 @@
     max-width: 900px;
     height: auto;
     border-radius: 12px;
-    margin-top: 30px;
+    margin-top: 10px;
     border: 2px solid #333;
 }
 
@@ -67,7 +67,7 @@
 .post-content {
     max-width: 900px;
     margin: 0 auto;
-    padding: 60px 20px;
+    padding: 24px 20px 60px;
 }
 
 .post-section {
@@ -201,11 +201,11 @@
 /* Responsive Design */
 @media (max-width: 768px) {
     .post-header {
-        padding: 40px 15px;
+        padding: 16px 15px 12px;
     }
 
     .post-title {
-        font-size: 2em;
+        font-size: 1.55em;
     }
 
     .post-header-content {
@@ -213,7 +213,7 @@
     }
 
     .post-content {
-        padding: 40px 15px;
+        padding: 18px 15px 40px;
     }
 
     .post-section h2 {
@@ -245,7 +245,7 @@
 
 @media (max-width: 480px) {
     .post-title {
-        font-size: 1.5em;
+        font-size: 1.2em;
     }
 
     .post-section h2 {
