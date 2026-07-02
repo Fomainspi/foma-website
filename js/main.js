@@ -55,31 +55,84 @@ fetch(`${pathPrefix}components/header.html?t=${Date.now()}`)
     })
     .catch(error => console.error('Error loading header:', error));
 
-// Waitlist lead form: redirect to WhatsApp with pre-filled message.
+// Bootcamp registration form: submit to backend API.
 function initWaitlistForm() {
-    const waitlistForm = document.getElementById('waitlistForm');
-    if (!waitlistForm || waitlistForm.dataset.bound === 'true') return;
+    const bootcampForm = document.getElementById('bootcampForm') || document.getElementById('waitlistForm');
+    if (!bootcampForm || bootcampForm.dataset.bound === 'true') return;
 
-    waitlistForm.dataset.bound = 'true';
+    bootcampForm.dataset.bound = 'true';
+    const feedbackContainer = document.getElementById('bootcampFormFeedback');
 
-    waitlistForm.addEventListener('submit', function (event) {
+    function showFormMessage(message, success = true) {
+        if (!feedbackContainer) return;
+        feedbackContainer.textContent = message;
+        feedbackContainer.className = `form-feedback ${success ? 'success' : 'error'}`;
+    }
+
+    bootcampForm.addEventListener('submit', async function (event) {
         event.preventDefault();
 
-        const fullName = document.getElementById('fullName')?.value.trim() || '';
-        const email = document.getElementById('email')?.value.trim() || '';
-        const experience = document.getElementById('experience')?.value || '';
-        const goal = document.getElementById('goal')?.value || '';
+        const form = event.currentTarget;
+        if (!form.checkValidity()) {
+            form.reportValidity();
+            showFormMessage('Please complete all required fields.', false);
+            return;
+        }
 
-        const message = [
-            "Hello, I\u2019m interested in the DevOps Bootcamp. Please send me more details.",
-            fullName ? `Name: ${fullName}` : '',
-            email ? `Email: ${email}` : '',
-            experience ? `Experience Level: ${experience}` : '',
-            goal ? `Goal: ${goal}` : ''
-        ].filter(Boolean).join('\n');
+        const name = (form.querySelector('#fullName')?.value || '').trim();
+        const email = (form.querySelector('#email')?.value || '').trim();
+        const phone = (form.querySelector('#phone')?.value || '').trim();
+        const country = (form.querySelector('#country')?.value || '').trim();
+        const program = form.querySelector('#program')?.value || '';
+        const experience = form.querySelector('#experience')?.value || '';
+        const message = (form.querySelector('#message')?.value || '').trim();
+        const scoreInput = form.querySelector('#score');
+        const scoreFromField = Number(scoreInput?.value);
 
-        const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(message)}`;
-        window.open(whatsappUrl, '_blank', 'noopener');
+        const score = Number.isFinite(scoreFromField)
+            ? scoreFromField
+            : (experience === 'Intermediate' ? 70 : experience === 'Beginner' ? 40 : experience === 'Advanced' ? 90 : 0);
+
+        const payload = {
+            name,
+            email,
+            phone,
+            country,
+            program,
+            experience,
+            message,
+            score,
+            notifyEmail: 'bootcamp@foma.life',
+            sendConfirmation: true,
+            submittedAt: new Date().toISOString()
+        };
+
+        try {
+            const response = await fetch('https://u16cqud033.execute-api.ap-southeast-1.amazonaws.com/register', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(payload)
+            });
+
+            let result = {};
+            try {
+                result = await response.json();
+            } catch (parseError) {
+                result = {};
+            }
+
+            if (!response.ok) {
+                throw new Error(result.message || 'Registration failed');
+            }
+
+            showFormMessage(result.message || 'Thank you! Your application has been received. We will be in touch shortly.', true);
+            form.reset();
+        } catch (error) {
+            showFormMessage(error.message || 'Something went wrong. Please try again.', false);
+            console.error('Bootcamp registration error:', error);
+        }
     });
 }
 
@@ -88,7 +141,7 @@ function initWhatsAppFloatingButton() {
 
     const message = 'Hello, I want to learn more about your DevOps training';
     const button = document.createElement('a');
-    button.href = `https://wa.me/?text=${encodeURIComponent(message)}`;
+    button.href = `https://wa.me/639062369675?text=${encodeURIComponent(message)}`;
     button.target = '_blank';
     button.rel = 'noopener noreferrer';
     button.className = 'whatsapp-float';

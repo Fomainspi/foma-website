@@ -94,21 +94,28 @@
 <section class="newsletter" id="register">
     <h2 data-lang="register_title">Join the Next DevOps Bootcamp</h2>
     <p class="section-intro" data-lang="register_desc">Limited seats available. Register your interest and get full details.</p>
-    <form id="waitlistForm" class="waitlist-form">
-        <input type="text" id="fullName" required data-lang-placeholder="form_full_name" placeholder="Full Name">
-        <input type="email" id="email" required data-lang-placeholder="form_email" placeholder="Email">
-        <select id="experience" required>
+    <form id="bootcampForm" class="waitlist-form">
+        <input type="text" id="fullName" name="name" required data-lang-placeholder="form_full_name" placeholder="Full Name">
+        <input type="email" id="email" name="email" required data-lang-placeholder="form_email" placeholder="Email">
+        <input type="tel" id="phone" name="phone" required data-lang-placeholder="form_phone" placeholder="Phone Number">
+        <input type="text" id="country" name="country" required data-lang-placeholder="form_country" placeholder="Country">
+        <select id="program" name="program" required>
+            <option value="" data-lang="form_program">Program Selected</option>
+            <option value="DevOps Bootcamp">DevOps Bootcamp</option>
+            <option value="Cloud Engineering">Cloud Engineering</option>
+            <option value="Kubernetes Fundamentals">Kubernetes Fundamentals</option>
+            <option value="Docker Fundamentals">Docker Fundamentals</option>
+        </select>
+        <select id="experience" name="experience" required>
             <option value="" data-lang="form_experience">Experience Level</option>
             <option value="Beginner" data-lang="form_beginner">Beginner</option>
             <option value="Intermediate" data-lang="form_intermediate">Intermediate</option>
+            <option value="Advanced" data-lang="form_advanced">Advanced</option>
         </select>
-        <select id="goal" required>
-            <option value="" data-lang="form_goal">Goal</option>
-            <option value="Job" data-lang="form_goal_job">Job</option>
-            <option value="Skill upgrade" data-lang="form_goal_skill">Skill upgrade</option>
-            <option value="Career change" data-lang="form_goal_career">Career change</option>
-        </select>
+        <textarea id="message" name="message" data-lang-placeholder="form_message" placeholder="Tell us about your goals or experience" rows="4"></textarea>
+        <input type="hidden" id="score" name="score" value="0">
         <button type="submit" data-lang="join_now">Join Now</button>
+        <div id="bootcampFormFeedback" class="form-feedback" aria-live="polite"></div>
     </form>
 </section>
 

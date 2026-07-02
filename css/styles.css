@@ -282,6 +282,32 @@ body.is-blog-article header {
     color: white;
 }
 
+.form-feedback {
+    grid-column: span 2;
+    padding: 12px 14px;
+    border-radius: 6px;
+    font-size: 0.95rem;
+    margin-top: 8px;
+    min-height: 1.2em;
+}
+
+.form-feedback.success {
+    background: rgba(100, 255, 218, 0.16);
+    border: 1px solid #64ffda;
+    color: #0a192f;
+}
+
+.form-feedback.error {
+    background: rgba(255, 77, 77, 0.12);
+    border: 1px solid #ff5c5c;
+    color: #8b0000;
+}
+
+.waitlist-form textarea {
+    min-height: 120px;
+    resize: vertical;
+}
+
 .search-inline {
     text-align: center;
     padding: 12px 20px 20px;
