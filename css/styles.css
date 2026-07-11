@@ -52,13 +52,21 @@ header {
     position: absolute;
     top: 20px;
     left: 20px;
-    width: 360px;
+    width: min(360px, 100%);
+    max-width: 360px;
     height: auto;
 }
 
+.logo a {
+    display: inline-block;
+}
+
 .logo-img {
-    width: 360px;
-    height: 160px;
+    width: 100%;
+    height: auto;
+    max-height: 120px;
+    display: block;
+    object-fit: contain;
 }
 
 /* NAVIGATION */
@@ -578,6 +586,8 @@ footer {
         position: static;
         display: block;
         margin: auto;
+        max-width: 280px;
+        width: 100%;
     }
 
     .about-hero {

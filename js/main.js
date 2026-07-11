@@ -32,7 +32,7 @@ fetch(`${pathPrefix}components/header.html?t=${Date.now()}`)
         // Force reload the logo image
         const logoImg = document.querySelector('.logo-img');
         if (logoImg) {
-            const src = logoImg.getAttribute('src') || 'images/logo.png';
+            const src = logoImg.getAttribute('src') || 'images/Horizontal-official-logo.png';
             const normalizedSrc = src.replace(/^\.\//, '').replace(/^\.\.\//, '');
             logoImg.src = `${pathPrefix}${normalizedSrc}?t=${Date.now()}`;
         }
