@@ -199,21 +199,103 @@
 }
 
 /* Responsive Design */
-@media (max-width: 768px) {
+@media (max-width: 430px) {
     .post-header {
-        padding: 16px 15px 12px;
-    }
-
-    .post-title {
-        font-size: 1.55em;
+        padding: 12px 15px 10px;
     }
 
     .post-header-content {
         margin: 0 auto;
     }
 
+    .post-category {
+        padding: 6px 12px;
+        font-size: 0.75em;
+        margin-bottom: 12px;
+    }
+
+    .post-title {
+        font-size: 1.3em;
+        margin: 12px 0;
+    }
+
+    .post-meta {
+        flex-direction: column;
+        gap: 6px;
+        font-size: 0.85em;
+    }
+
+    .post-featured-image {
+        margin-top: 8px;
+        border: 1px solid #333;
+    }
+
     .post-content {
-        padding: 18px 15px 40px;
+        padding: 15px 15px 40px;
+    }
+
+    .post-section {
+        margin-bottom: 30px;
+    }
+
+    .post-section h2 {
+        font-size: 1.4em;
+        margin-bottom: 12px;
+        padding-bottom: 10px;
+    }
+
+    .post-section h3 {
+        font-size: 1.1em;
+        margin-top: 15px;
+        margin-bottom: 10px;
+    }
+
+    .post-section p {
+        font-size: 0.95em;
+        line-height: 1.6;
+    }
+
+    .post-section li {
+        font-size: 0.95em;
+    }
+
+    .code-block {
+        padding: 12px;
+        font-size: 0.8em;
+        margin: 15px 0;
+    }
+
+    .cta-card {
+        padding: 20px;
+        margin-top: 40px;
+    }
+
+    .cta-card h3 {
+        font-size: 1.3em;
+        margin-top: 0;
+    }
+
+    .cta-card p {
+        font-size: 0.95em;
+    }
+
+    .cta-button {
+        padding: 12px 30px;
+        font-size: 0.95em;
+    }
+}
+
+@media (min-width: 431px) and (max-width: 768px) {
+    .post-header {
+        padding: 16px 20px 12px;
+    }
+
+    .post-title {
+        font-size: 1.7em;
+    }
+
+    .post-content {
+        padding: 18px 20px 40px;
     }
 
     .post-section h2 {
@@ -229,11 +311,6 @@
         font-size: 1em;
     }
 
-    .post-meta {
-        flex-direction: column;
-        gap: 8px;
-    }
-
     .cta-card {
         padding: 25px;
     }
@@ -243,25 +320,17 @@
     }
 }
 
-@media (max-width: 480px) {
-    .post-title {
-        font-size: 1.2em;
+@media (min-width: 769px) {
+    .post-header {
+        padding: 24px 40px 18px;
     }
 
-    .post-section h2 {
-        font-size: 1.4em;
+    .post-content {
+        padding: 24px 40px 60px;
     }
 
-    .post-section h3 {
+    .post-section p,
+    .post-section li {
         font-size: 1.1em;
-    }
-
-    .code-block {
-        padding: 15px;
-        font-size: 0.85em;
-    }
-
-    .cta-card {
-        padding: 20px;
     }
 }
