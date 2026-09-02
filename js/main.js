@@ -1,3 +1,7 @@
+if (window.location.pathname === '/index.html') {
+    window.history.replaceState(null, '', `/${window.location.search}${window.location.hash}`);
+}
+
 let currentLang = localStorage.getItem('preferredLanguage') || "en";
 const pathname = window.location.pathname;
 let pathPrefix = "./";
@@ -23,7 +27,7 @@ fetch(`${pathPrefix}components/header.html?t=${Date.now()}`)
             // Rebase relative links in injected header when loaded from nested folders.
             header.querySelectorAll('a[href]').forEach(link => {
                 const href = link.getAttribute('href');
-                if (!href || href.startsWith('http') || href.startsWith('#') || href.startsWith('mailto:')) return;
+                if (!href || href.startsWith('http') || href.startsWith('/') || href.startsWith('#') || href.startsWith('mailto:')) return;
                 const normalized = href.replace(/^\.\//, '').replace(/^\.\.\//, '');
                 link.setAttribute('href', `${pathPrefix}${normalized}`);
             });
@@ -380,13 +384,13 @@ async function loadArticlesFromCMS() {
         const articles = Array.isArray(result.data) ? result.data : [];
 
         const categoryRoutes = {
-            devops: "training/devops.html",
-            docker: "training/docker.html",
-            kubernetes: "training/kubernetes.html",
-            cicd: "training/cicd.html",
-            linux: "training/linux.html",
-            terraform: "training/terraform.html",
-            ansible: "training/ansible.html"
+            devops: "/training/devops",
+            docker: "/training/docker",
+            kubernetes: "/training/kubernetes",
+            cicd: "/training/cicd",
+            linux: "/training/linux",
+            terraform: "/training/terraform",
+            ansible: "/training/ansible"
         };
 
         articles.forEach(article => {
@@ -415,7 +419,7 @@ async function loadArticlesFromCMS() {
 
             const openArticle = () => {
                 if (!articleDocumentId) return;
-                window.location.href = `blog/cms-article.html?id=${articleDocumentId}`;
+                window.location.href = `/blog/cms-article?id=${articleDocumentId}`;
             };
 
             // Make entire card clickable like static cards
@@ -436,7 +440,7 @@ async function loadArticlesFromCMS() {
                 <img src="${imageUrl}" alt="${data?.title || "DevOps Article"}">
                 <h2>${data?.title || "DevOps Article"}</h2>
                 <p>${data?.description || "Explore this DevOps article."}</p>
-                <a href="${articleDocumentId ? `blog/cms-article.html?id=${articleDocumentId}` : articleLink}">Read More →</a>
+                <a href="${articleDocumentId ? `/blog/cms-article?id=${articleDocumentId}` : articleLink}">Read More →</a>
             `;
 
             container.appendChild(card);

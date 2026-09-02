@@ -8,17 +8,17 @@ let filteredPosts = sortPostsByDate(blogPosts);
 
 // Maps blog post IDs to their published article pages.
 const postRoutes = {
-    1: "blog/docker-basics.html",
-    2: "blog/kubernetes-intro.html",
-    3: "blog/terraform.html",
-    4: "blog/cicd-pipeline.html",
-    5: "blog/cloud.html",
-    6: "blog/linux.html",
-    7: "blog/devsecops.html",
-    8: "blog/kubernetes-networking.html",
-    9: "blog/linux-devops.html",
-    10: "blog/docker-revolutionizing-software-development-and-deployment.html",
-    11: "blog/article1.html"
+    1: "/blog/docker-basics",
+    2: "/blog/kubernetes-intro",
+    3: "/blog/terraform",
+    4: "/blog/cicd-pipeline",
+    5: "/blog/cloud",
+    6: "/blog/linux",
+    7: "/blog/devsecops",
+    8: "/blog/kubernetes-networking",
+    9: "/blog/linux-devops",
+    10: "/blog/docker-revolutionizing-software-development-and-deployment",
+    11: "/blog/article1"
 };
 
 function sortPostsByDate(posts) {

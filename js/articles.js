@@ -4,7 +4,7 @@ const articles = [
         description: "Understand DevOps culture, lifecycle, tools, and benefits for modern software delivery.",
         category: "devops",
         image: "images/devops.jpg",
-        link: "blog/article1.html",
+        link: "/blog/article1",
         date: "2026-04-01"
     },
     {
@@ -12,7 +12,7 @@ const articles = [
         description: "Learn Docker fundamentals and practical commands for DevOps workflows.",
         category: "docker",
         image: "images/docker.png",
-        link: "blog/docker-basics.html",
+        link: "/blog/docker-basics",
         date: "2026-04-04"
     },
     {
@@ -20,7 +20,7 @@ const articles = [
         description: "Discover how Docker transforms development and deployment with consistent, portable containers.",
         category: "docker",
         image: "images/docker2.png",
-        link: "blog/docker-revolutionizing-software-development-and-deployment.html",
+        link: "/blog/docker-revolutionizing-software-development-and-deployment",
         date: "2026-04-06"
     },
     {
@@ -28,7 +28,7 @@ const articles = [
         description: "Understand Kubernetes core concepts for modern application deployment.",
         category: "kubernetes",
         image: "images/kubernetes.png",
-        link: "blog/kubernetes-intro.html",
+        link: "/blog/kubernetes-intro",
         date: "2026-04-05"
     },
     {
@@ -36,7 +36,7 @@ const articles = [
         description: "Automate build, test, and deployment using CI/CD pipelines.",
         category: "cicd",
         image: "images/cicd.png",
-        link: "blog/cicd-pipeline.html",
+        link: "/blog/cicd-pipeline",
         date: "2026-04-06"
     },
     {
@@ -44,7 +44,7 @@ const articles = [
         description: "Master essential Linux commands and system administration skills for DevOps engineers.",
         category: "linux",
         image: "images/linux.png",
-        link: "blog/linux.html",
+        link: "/blog/linux",
         date: "2026-03-18"
     },
     {
@@ -52,7 +52,7 @@ const articles = [
         description: "Learn essential Linux skills for DevOps engineers.",
         category: "linux",
         image: "images/linux.png",
-        link: "blog/linux-devops.html",
+        link: "/blog/linux-devops",
         date: "2026-04-04"
     },
     {
@@ -60,7 +60,7 @@ const articles = [
         description: "Provision cloud infrastructure safely with Terraform and Infrastructure as Code.",
         category: "terraform",
         image: "images/terraform.png",
-        link: "blog/terraform.html",
+        link: "/blog/terraform",
         date: "2026-03-25"
     }
 ];
