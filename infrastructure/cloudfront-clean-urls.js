@@ -16,7 +16,7 @@ function handler(event) {
         return request;
     }
 
-    if (uri.endsWith('.html')) {
+    if (uri.endsWith('.html') && !uri.startsWith('/components/') && !uri.startsWith('/google')) {
         return {
             statusCode: 301,
             statusDescription: 'Moved Permanently',

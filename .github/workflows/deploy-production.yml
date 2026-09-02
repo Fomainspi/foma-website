@@ -46,12 +46,12 @@ jobs:
               --name "$FUNCTION_NAME" \
               --if-match "$ETAG" \
               --function-code fileb://infrastructure/cloudfront-clean-urls.js \
-              --function-config Comment="FOMA clean URL routing" Runtime=cloudfront-js-2.0
+              --function-config '{"Comment":"FOMA clean URL routing","Runtime":"cloudfront-js-2.0"}'
           else
             aws cloudfront create-function \
               --name "$FUNCTION_NAME" \
               --function-code fileb://infrastructure/cloudfront-clean-urls.js \
-              --function-config Comment="FOMA clean URL routing" Runtime=cloudfront-js-2.0
+              --function-config '{"Comment":"FOMA clean URL routing","Runtime":"cloudfront-js-2.0"}'
           fi
           ETAG=$(aws cloudfront describe-function --name "$FUNCTION_NAME" --query 'ETag' --output text)
           aws cloudfront publish-function --name "$FUNCTION_NAME" --if-match "$ETAG"
