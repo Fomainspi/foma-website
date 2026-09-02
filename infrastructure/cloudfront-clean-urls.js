@@ -1,13 +1,16 @@
-async function handler(event) {
+function handler(event) {
     const request = event.request;
     const uri = request.uri;
     const rawQueryString = request.querystring || {};
-    const queryString = typeof rawQueryString === 'string'
-        ? rawQueryString
-        : Object.entries(rawQueryString)
-            .map(([key, value]) => `${encodeURIComponent(key)}=${encodeURIComponent(value.value || '')}`)
-            .join('&');
-    const location = path => queryString ? `${path}?${queryString}` : path;
+    let queryString = typeof rawQueryString === 'string' ? rawQueryString : '';
+
+    if (typeof rawQueryString !== 'string') {
+        for (const key in rawQueryString) {
+            if (!Object.prototype.hasOwnProperty.call(rawQueryString, key)) continue;
+            if (queryString) queryString += '&';
+            queryString += `${encodeURIComponent(key)}=${encodeURIComponent(rawQueryString[key].value || '')}`;
+        }
+    }
 
     if (uri === '/index.html') {
         return request;
@@ -18,7 +21,7 @@ async function handler(event) {
             statusCode: 301,
             statusDescription: 'Moved Permanently',
             headers: {
-                location: { value: location(uri.slice(0, -5)) }
+                location: { value: `${uri.slice(0, -5)}${queryString ? `?${queryString}` : ''}` }
             }
         };
     }
