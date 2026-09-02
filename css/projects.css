@@ -34,8 +34,31 @@
     text-decoration: underline;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 430px) {
     .project-card-link {
         width: 100%;
+    }
+
+    .project-breadcrumb {
+        padding: 0 15px;
+        font-size: 0.85em;
+    }
+}
+
+@media (min-width: 431px) and (max-width: 768px) {
+    .project-card-link {
+        width: 48%;
+    }
+
+    .project-breadcrumb {
+        padding: 0 20px;
+    }
+}
+
+@media (min-width: 769px) {
+    .project-card-link:hover .feature,
+    .project-card-link:focus-visible .feature {
+        transform: scale(1.03);
+        box-shadow: 0 10px 24px rgba(0, 0, 0, 0.14);
     }
 }
