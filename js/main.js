@@ -48,6 +48,7 @@ fetch(`${pathPrefix}components/header.html?t=${Date.now()}`)
             if (backHomeLi) backHomeLi.style.display = 'block';
             if (homeLi) homeLi.style.display = 'none';
         }
+        setupMobileMenu();
         setupLanguageSwitcher();
         applyTranslations(); // Apply language after header loads
         initWaitlistForm();
@@ -83,7 +84,7 @@ function initWaitlistForm() {
         const email = (form.querySelector('#email')?.value || '').trim();
         const phone = (form.querySelector('#phone')?.value || '').trim();
         const country = (form.querySelector('#country')?.value || '').trim();
-        const program = form.querySelector('#program')?.value || '';
+        const program = form.querySelector('#program-select')?.value || '';
         const experience = form.querySelector('#experience')?.value || '';
         const message = (form.querySelector('#message')?.value || '').trim();
         const scoreInput = form.querySelector('#score');
@@ -150,6 +151,26 @@ function initWhatsAppFloatingButton() {
     button.textContent = 'WA';
 
     document.body.appendChild(button);
+}
+
+function setupMobileMenu() {
+    const toggle = document.querySelector('.menu-toggle');
+    const navigation = document.querySelector('header nav');
+    const languageSwitch = document.querySelector('.language-switch');
+
+    if (!toggle || !navigation || !languageSwitch) return;
+
+    toggle.addEventListener('click', () => {
+        const isOpen = navigation.classList.toggle('menu-open');
+        toggle.setAttribute('aria-expanded', String(isOpen));
+    });
+
+    navigation.querySelectorAll('a').forEach(link => {
+        link.addEventListener('click', () => {
+            navigation.classList.remove('menu-open');
+            toggle.setAttribute('aria-expanded', 'false');
+        });
+    });
 }
 
 window.addEventListener('DOMContentLoaded', () => {
