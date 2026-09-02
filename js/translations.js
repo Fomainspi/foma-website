@@ -13,13 +13,13 @@ const translations = {
         back_home: "Back to Home",
 
         // Hero Section
-        hero_title: "Become a Job-Ready DevOps Engineer in 8 Weeks",
+        hero_title: "Become a Job-Ready DevOps Engineer in 9 Months",
         hero_desc: "Learn Docker, Kubernetes, CI/CD, and Cloud by building real-world projects",
         hero_cta_join: "Join the Bootcamp",
         hero_cta_program: "View Program",
         program_title: "DevOps Bootcamp Program",
         program_intro: "An intensive, project-based path to become job-ready.",
-        program_duration: "Duration: 8 Weeks",
+        program_duration: "Duration: 9 Months",
         program_level: "Level: Beginner to Intermediate",
         program_format: "Format: Online + Hands-on",
         module_1: "Linux Fundamentals",
@@ -212,13 +212,13 @@ const translations = {
         back_home: "Retour à l'accueil",
 
         // Hero Section
-        hero_title: "Devenez ingénieur DevOps prêt à l'emploi en 8 semaines",
+        hero_title: "Devenez ingénieur DevOps prêt à l'emploi en 9 mois",
         hero_desc: "Apprenez Docker, Kubernetes, CI/CD et le Cloud en construisant des projets réels",
         hero_cta_join: "Rejoindre le Bootcamp",
         hero_cta_program: "Voir le Programme",
         program_title: "Programme Bootcamp DevOps",
         program_intro: "Un parcours intensif basé sur des projets pour devenir opérationnel.",
-        program_duration: "Durée : 8 semaines",
+        program_duration: "Durée : 9 mois",
         program_level: "Niveau : Débutant à Intermédiaire",
         program_format: "Format : En ligne + Pratique",
         module_1: "Fondamentaux Linux",

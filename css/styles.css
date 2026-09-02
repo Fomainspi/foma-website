@@ -54,6 +54,10 @@ header {
     object-fit: contain;
 }
 
+.menu-toggle {
+    display: none;
+}
+
 /* NAVIGATION */
 nav {
     flex: 1;
@@ -572,6 +576,15 @@ footer {
 
 /* RESPONSIVE */
 @media (max-width: 768px) {
+    header {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) auto;
+        align-items: center;
+        gap: 12px;
+        max-height: 100vh;
+        overflow-y: auto;
+    }
+
     .hero h2 {
         font-size: 30px;
     }
@@ -594,9 +607,17 @@ footer {
     }
 
     nav {
+        display: none;
+        grid-column: 1 / -1;
+        flex: none;
+        width: 100%;
         position: static;
         text-align: center;
-        margin-top: 20px;
+        margin-top: 0;
+    }
+
+    nav.menu-open {
+        display: block;
     }
 
     nav ul {
@@ -604,17 +625,36 @@ footer {
     }
 
     .language-switch {
+        display: none;
+        grid-column: 1 / -1;
+        width: 100%;
+        justify-content: center;
         position: static;
-        margin-top: 12px;
+        margin-top: 0;
         text-align: center;
+    }
+
+    nav.menu-open + .language-switch {
+        display: flex;
     }
 
     .logo {
         position: static;
-        display: block;
-        margin: auto;
+        display: flex;
+        margin: 0;
         max-width: 280px;
         width: 100%;
+    }
+
+    .menu-toggle {
+        display: block;
+        background: transparent;
+        border: 1px solid #64ffda;
+        color: white;
+        padding: 8px 12px;
+        border-radius: 4px;
+        cursor: pointer;
+        font: inherit;
     }
 
     .about-hero {
@@ -764,6 +804,10 @@ footer {
 
     .waitlist-form button {
         width: 100%;
+        grid-column: span 1;
+    }
+
+    .form-feedback {
         grid-column: span 1;
     }
 
