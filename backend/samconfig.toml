@@ -1,0 +1,26 @@
+version = 0.1
+
+# Deploys a single, isolated CloudFormation stack per environment.
+# Only the [dev] environment is configured/used for now, per the approved
+# plan ("Build Dev first. Build Production only after Dev is fully
+# validated."). A [prod] section should only be added and deployed once
+# Dev has been tested and explicitly approved — it is intentionally
+# omitted here so that a stray `sam deploy` cannot accidentally target
+# Production.
+
+[dev.deploy.parameters]
+stack_name = "foma-backend-dev"
+resolve_s3 = true
+s3_prefix = "foma-backend-dev"
+region = "ap-southeast-1"
+confirm_changeset = true
+capabilities = "CAPABILITY_IAM"
+parameter_overrides = [
+    "EnvironmentName=dev",
+    "AllowedOrigin=https://dev.foma.life",
+    "SesSenderEmail=CHANGE_ME_verified_sender@foma.life",
+    "SesAdminRecipientEmail=CHANGE_ME_admin@foma.life",
+    "SesAllowedTestRecipients=CHANGE_ME_verified_test@foma.life",
+    "ApiThrottlingRateLimit=5",
+    "ApiThrottlingBurstLimit=10"
+]
