@@ -1,0 +1,142 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: >
+  FOMA Bootcamp Registration backend (new, from-scratch stack).
+  This template is deployed once per environment (Dev, Production) as a
+  completely separate CloudFormation stack, so that each environment gets
+  its own API, Lambda, DynamoDB table, and IAM role with no shared
+  resources between environments. It does NOT touch, reference, or depend
+  on the legacy "bootcamp-registration" Lambda/API/database, which remains
+  a frozen, untouched rollback path.
+
+Parameters:
+  EnvironmentName:
+    Type: String
+    Description: Deployment environment name. Used to suffix/name all resources so Dev and Production never share a resource.
+    AllowedValues:
+      - dev
+      - prod
+    Default: dev
+
+  AllowedOrigin:
+    Type: String
+    Description: >
+      Exact origin (scheme + host, no trailing slash) allowed to call this API via CORS.
+      Example: https://dev.foma.life for Dev, https://foma.life for Production.
+
+  SesSenderEmail:
+    Type: String
+    Description: >
+      SES-verified "From" address used to send admin notification and student
+      confirmation emails for this environment. Must be verified in SES before deploying
+      (SES sandbox requires verification of both sender and recipient).
+
+  SesAdminRecipientEmail:
+    Type: String
+    Description: >
+      Destination address for the admin notification email (e.g. the FOMA Titan mailbox).
+      This is fixed server-side configuration; the Lambda never trusts a caller-supplied
+      notification address from the request body.
+
+  SesAllowedTestRecipients:
+    Type: CommaDelimitedList
+    Default: ""
+    Description: >
+      Dev-only safety allowlist. Comma-separated list of SES-verified email addresses that
+      are permitted to receive the optional student confirmation email while testing.
+      In Dev, if the student's email is not in this list, the confirmation email is skipped
+      (registration + admin notification still succeed) to prevent accidentally emailing
+      arbitrary external addresses during testing. Leave empty to disable confirmation
+      emails entirely for the environment.
+
+Globals:
+  Function:
+    Runtime: nodejs22.x
+    Timeout: 10
+    MemorySize: 128
+    Tracing: Active
+    Environment:
+      Variables:
+        ENVIRONMENT_NAME: !Ref EnvironmentName
+
+Resources:
+  RegistrationsTable:
+    Type: AWS::Serverless::SimpleTable
+    Properties:
+      TableName: !Sub "foma-registrations-${EnvironmentName}"
+      PrimaryKey:
+        Name: registrationId
+        Type: String
+      # On-demand billing: pay-per-request, no fixed/idle cost.
+      SSESpecification:
+        SSEEnabled: true
+      Tags:
+        Environment: !Ref EnvironmentName
+        Project: foma-backend
+
+  RegistrationApi:
+    Type: AWS::Serverless::HttpApi
+    Properties:
+      StageName: !Ref EnvironmentName
+      CorsConfiguration:
+        AllowOrigins:
+          - !Ref AllowedOrigin
+        AllowMethods:
+          - POST
+          - OPTIONS
+        AllowHeaders:
+          - Content-Type
+      # No custom domain yet per approved decision; uses the API Gateway
+      # generated HTTPS endpoint (https://{api-id}.execute-api.{region}.amazonaws.com/{stage}).
+
+  RegisterFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: !Sub "foma-register-${EnvironmentName}"
+      CodeUri: src/functions/register/
+      Handler: index.handler
+      Description: !Sub "FOMA bootcamp registration handler (${EnvironmentName})"
+      Environment:
+        Variables:
+          TABLE_NAME: !Ref RegistrationsTable
+          SES_SENDER_EMAIL: !Ref SesSenderEmail
+          SES_ADMIN_RECIPIENT_EMAIL: !Ref SesAdminRecipientEmail
+          SES_ALLOWED_TEST_RECIPIENTS: !Join [",", !Ref SesAllowedTestRecipients]
+      Policies:
+        # Scoped exactly to this environment's table ARN only — Dev's role
+        # cannot reference Production's table (different stack, different ARN).
+        - DynamoDBWritePolicy:
+            TableName: !Ref RegistrationsTable
+        # Scoped to only the verified sender identity configured for this
+        # environment; cannot send "From" any other identity/domain.
+        - Statement:
+            - Sid: AllowSendFromEnvironmentSenderOnly
+              Effect: Allow
+              Action:
+                - ses:SendEmail
+                - ses:SendRawEmail
+              Resource: !Sub "arn:aws:ses:${AWS::Region}:${AWS::AccountId}:identity/${SesSenderEmail}"
+      Events:
+        RegisterPost:
+          Type: HttpApi
+          Properties:
+            ApiId: !Ref RegistrationApi
+            Path: /register
+            Method: POST
+
+Outputs:
+  ApiEndpoint:
+    Description: Base URL of the generated API Gateway HTTPS endpoint for this environment.
+    Value: !Sub "https://${RegistrationApi}.execute-api.${AWS::Region}.amazonaws.com/${EnvironmentName}"
+
+  RegisterEndpoint:
+    Description: Full URL for the registration POST route.
+    Value: !Sub "https://${RegistrationApi}.execute-api.${AWS::Region}.amazonaws.com/${EnvironmentName}/register"
+
+  TableName:
+    Description: Name of the DynamoDB table for this environment.
+    Value: !Ref RegistrationsTable
+
+  FunctionArn:
+    Description: ARN of the registration Lambda function for this environment.
+    Value: !GetAtt RegisterFunction.Arn
