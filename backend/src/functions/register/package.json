@@ -1,0 +1,13 @@
+{
+  "name": "foma-register-function",
+  "version": "1.0.0",
+  "private": true,
+  "description": "FOMA bootcamp registration Lambda handler (Dev/Production, deployed per-environment via AWS SAM).",
+  "type": "module",
+  "main": "index.mjs",
+  "dependencies": {
+    "@aws-sdk/client-dynamodb": "^3.1125.0",
+    "@aws-sdk/lib-dynamodb": "^3.1125.0",
+    "@aws-sdk/client-ses": "^3.1125.0"
+  }
+}

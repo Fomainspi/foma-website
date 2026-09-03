@@ -1,0 +1,16 @@
+{
+  "version": "2.0",
+  "routeKey": "POST /register",
+  "rawPath": "/register",
+  "headers": {
+    "content-type": "application/json"
+  },
+  "requestContext": {
+    "http": {
+      "method": "POST",
+      "path": "/register"
+    }
+  },
+  "body": "{\"name\":\"Test Student\",\"email\":\"test.student@example.com\",\"phone\":\"+1 555 0100\",\"country\":\"Testland\",\"program\":\"DevOps Bootcamp\",\"experience\":\"Beginner\",\"message\":\"Excited to learn!\",\"score\":0,\"notifyEmail\":\"bootcamp@foma.life\",\"sendConfirmation\":true,\"submittedAt\":\"2026-01-01T00:00:00.000Z\"}",
+  "isBase64Encoded": false
+}

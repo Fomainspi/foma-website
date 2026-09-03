@@ -31,3 +31,8 @@ node_modules/
 # =========================
 *.tmp
 *.swp
+
+# =========================
+# AWS SAM build artifacts
+# =========================
+backend/.aws-sam/
