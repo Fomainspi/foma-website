@@ -31,3 +31,4 @@ node_modules/
 # =========================
 *.tmp
 *.swp
+.aws-sam/
