@@ -18,9 +18,9 @@ capabilities = "CAPABILITY_IAM"
 parameter_overrides = [
     "EnvironmentName=dev",
     "AllowedOrigin=https://dev.foma.life",
-    "SesSenderEmail=CHANGE_ME_verified_sender@foma.life",
-    "SesAdminRecipientEmail=CHANGE_ME_admin@foma.life",
-    "SesAllowedTestRecipients=CHANGE_ME_verified_test@foma.life",
+    "SesSenderEmail=bootcamp@foma.life",
+    "SesAdminRecipientEmail=bootcamp@foma.life",
+    "SesAllowedTestRecipients=bootcamp@foma.life",
     "ApiThrottlingRateLimit=5",
     "ApiThrottlingBurstLimit=10"
 ]
