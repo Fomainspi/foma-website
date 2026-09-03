@@ -1,0 +1,86 @@
+name: Deploy Development to AWS
+
+on:
+  push:
+    branches:
+      - develop
+
+permissions:
+  contents: read
+  id-token: write
+
+jobs:
+  deploy:
+    name: Deploy to S3 (Development)
+    runs-on: ubuntu-latest
+
+    environment: development
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ vars.AWS_ROLE_ARN }}
+          aws-region: ${{ vars.AWS_REGION }}
+
+      - name: Sync website to S3
+        run: |
+          aws s3 sync . s3://${{ vars.S3_BUCKET }} \
+            --delete \
+            --exclude ".git/*" \
+            --exclude ".github/*" \
+            --exclude ".gitignore" \
+            --exclude "README.md" \
+            --exclude "BLOG_DOCUMENTATION.md"
+
+      - name: Publish clean URL CloudFront function
+        env:
+          FUNCTION_NAME: foma-clean-urls-dev
+        run: |
+          if aws cloudfront describe-function --name "$FUNCTION_NAME" >/dev/null 2>&1; then
+            ETAG=$(aws cloudfront describe-function --name "$FUNCTION_NAME" --query 'ETag' --output text)
+            aws cloudfront update-function \
+              --name "$FUNCTION_NAME" \
+              --if-match "$ETAG" \
+              --function-code fileb://infrastructure/cloudfront-clean-urls.js \
+              --function-config '{"Comment":"FOMA clean URL routing (development)","Runtime":"cloudfront-js-2.0"}'
+          else
+            aws cloudfront create-function \
+              --name "$FUNCTION_NAME" \
+              --function-code fileb://infrastructure/cloudfront-clean-urls.js \
+              --function-config '{"Comment":"FOMA clean URL routing (development)","Runtime":"cloudfront-js-2.0"}'
+          fi
+          ETAG=$(aws cloudfront describe-function --name "$FUNCTION_NAME" --query 'ETag' --output text)
+          aws cloudfront publish-function --name "$FUNCTION_NAME" --if-match "$ETAG"
+
+      - name: Attach clean URL function to CloudFront
+        env:
+          FUNCTION_NAME: foma-clean-urls-dev
+          DISTRIBUTION_ID: ${{ vars.CLOUDFRONT_DISTRIBUTION_ID }}
+        run: |
+          FUNCTION_ARN=$(aws cloudfront describe-function --name "$FUNCTION_NAME" --stage LIVE --query 'FunctionSummary.FunctionMetadata.FunctionARN' --output text)
+          aws cloudfront get-distribution-config --id "$DISTRIBUTION_ID" > distribution-config.json
+          ETAG=$(jq -r '.ETag' distribution-config.json)
+          jq --arg functionArn "$FUNCTION_ARN" '
+            .DistributionConfig.DefaultCacheBehavior.FunctionAssociations.Items = (
+              (.DistributionConfig.DefaultCacheBehavior.FunctionAssociations.Items // [])
+              | map(select(.EventType != "viewer-request"))
+              + [{EventType: "viewer-request", FunctionARN: $functionArn}]
+            )
+            | .DistributionConfig.DefaultCacheBehavior.FunctionAssociations.Quantity =
+              (.DistributionConfig.DefaultCacheBehavior.FunctionAssociations.Items | length)
+            | .DistributionConfig
+          ' distribution-config.json > distribution-config-updated.json
+          aws cloudfront update-distribution \
+            --id "$DISTRIBUTION_ID" \
+            --if-match "$ETAG" \
+            --distribution-config file://distribution-config-updated.json
+
+      - name: Invalidate CloudFront cache
+        run: |
+          aws cloudfront create-invalidation \
+            --distribution-id ${{ vars.CLOUDFRONT_DISTRIBUTION_ID }} \
+            --paths "/*"
