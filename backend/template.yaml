@@ -49,6 +49,23 @@ Parameters:
       arbitrary external addresses during testing. Leave empty to disable confirmation
       emails entirely for the environment.
 
+  ApiThrottlingRateLimit:
+    Type: Number
+    Default: 5
+    Description: >
+      Steady-state requests/second allowed on the API stage. Conservative default protects
+      the public POST /register endpoint from accidental abuse/spam; can be raised for
+      Production traffic once real usage patterns are known.
+
+  ApiThrottlingBurstLimit:
+    Type: Number
+    Default: 10
+    Description: >
+      Maximum request burst capacity allowed on the API stage, on top of the steady-state
+      rate limit. Conservative default protects the public POST /register endpoint from
+      accidental abuse/spam; can be raised for Production traffic once real usage patterns
+      are known.
+
 Globals:
   Function:
     Runtime: nodejs22.x
@@ -86,6 +103,12 @@ Resources:
           - OPTIONS
         AllowHeaders:
           - Content-Type
+      # Conservative throttling to protect the public POST /register route
+      # from accidental abuse/spam. Values are configurable via parameters
+      # so Production can use different (e.g. higher) limits later.
+      DefaultRouteSettings:
+        ThrottlingRateLimit: !Ref ApiThrottlingRateLimit
+        ThrottlingBurstLimit: !Ref ApiThrottlingBurstLimit
       # No custom domain yet per approved decision; uses the API Gateway
       # generated HTTPS endpoint (https://{api-id}.execute-api.{region}.amazonaws.com/{stage}).
 

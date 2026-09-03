@@ -16,7 +16,7 @@ Frontend (dev.foma.life / foma.life)
 API Gateway (HTTP API, generated endpoint, per-environment)
         |
         v
-Lambda: foma-register-<env>  (Node.js 20.x)
+Lambda: foma-register-<env>  (Node.js 22.x)
         |
         v
 DynamoDB: foma-registrations-<env>  (on-demand)
@@ -43,11 +43,24 @@ the mechanism that guarantees isolation:
   will create a **second, completely independent stack** from the same
   template with different parameter values.
 
+## API throttling
+
+The API stage applies conservative default throttling to protect the
+public `POST /register` route from accidental abuse/spam:
+
+- `ApiThrottlingRateLimit` — steady-state requests/second (default: `5`)
+- `ApiThrottlingBurstLimit` — burst capacity (default: `10`)
+
+Both are template parameters, so Production can override them with
+different (e.g. higher) limits later via its own `samconfig.toml`
+parameter overrides, without changing the template itself.
+
 ## Files
 
 - `template.yaml` — AWS SAM template. Parameterized by `EnvironmentName`,
-  `AllowedOrigin` (CORS), `SesSenderEmail`, `SesAdminRecipientEmail`, and
-  `SesAllowedTestRecipients`. Deploying it twice (once per environment)
+  `AllowedOrigin` (CORS), `SesSenderEmail`, `SesAdminRecipientEmail`,
+  `SesAllowedTestRecipients`, `ApiThrottlingRateLimit`, and
+  `ApiThrottlingBurstLimit`. Deploying it twice (once per environment)
   produces two fully isolated stacks.
 - `src/functions/register/index.mjs` — Registration Lambda handler:
   validates input, computes the enrollment `score` **server-side** from
