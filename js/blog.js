@@ -94,7 +94,9 @@ async function loadCmsPosts() {
 }
 
 function mergeBlogPosts(cmsPosts) {
-    const staticPosts = Array.isArray(window.blogPosts) ? window.blogPosts : [];
+    const staticPosts = typeof blogPosts !== "undefined" && Array.isArray(blogPosts)
+        ? blogPosts
+        : [];
 
     // CMS posts are authoritative for CMS-managed articles. Static posts remain available.
     allBlogPosts = [...staticPosts, ...cmsPosts];
