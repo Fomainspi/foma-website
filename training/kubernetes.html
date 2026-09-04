@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kubernetes Fundamentals &amp; Operations | FOMA</title>
-    <meta name="description" content="Build practical Kubernetes skills for deploying, managing, scaling, securing, and troubleshooting applications.">
+    <title>Kubernetes Training | FOMA</title>
+    <meta name="description" content="Kubernetes training modules covering pods, deployments, services, and scaling.">
     <link rel="stylesheet" href="../css/styles.css">
     <link rel="icon" type="image/png" sizes="32x32" href="../images/Official-logo.png">
     <link rel="icon" type="image/png" sizes="16x16" href="../images/Official-logo.png">
@@ -15,104 +15,24 @@
 </head>
 <body>
 <section class="hero">
-    <h2 data-lang="k8s_title">Kubernetes Fundamentals &amp; Operations</h2>
-    <p data-lang="k8s_hero_intro">Build practical skills for deploying, managing, scaling, updating, and troubleshooting applications in Kubernetes clusters.</p>
+    <h2>Kubernetes Training</h2>
+    <p>Understand orchestration fundamentals and production deployment patterns.</p>
     <a href="/" class="btn">Back to Home</a>
 </section>
 <div class="article">
-    <h2 data-lang="k8s_introduction">Introduction</h2>
-    <p data-lang="k8s_intro_text">This track helps beginners build a strong foundation in Kubernetes and progressively develop the practical skills needed to deploy, manage, scale, update, and troubleshoot applications running in Kubernetes clusters.</p>
-    <p data-lang="k8s_practical_text">Through hands-on exercises, learners will work with core Kubernetes resources, application deployment, networking, configuration, storage, security, scaling, deployment strategies, Kustomize, cluster upgrades, and day-to-day troubleshooting.</p>
-    <h2 data-lang="k8s_modules">Modules</h2>
-    <div id="kubernetes-modules"></div>
-    <h2 data-lang="k8s_final_project_title">Practical Final Project</h2>
-    <p data-lang="k8s_final_project_intro">Learners will deploy and operate a complete application environment in Kubernetes, including:</p>
-    <ul id="k8s-final-project"></ul>
-    <h2 data-lang="k8s_learning_outcome_title">Learning Outcome</h2>
-    <p data-lang="k8s_learning_outcome">By the end of this track, learners will be able to deploy, configure, expose, scale, secure, update, troubleshoot, monitor, and maintain Kubernetes workloads and confidently perform common day-to-day Kubernetes administration tasks.</p>
+    <h2>Introduction</h2>
+    <p>This track helps beginners understand Kubernetes resources and day-to-day operational tasks.</p>
+    <h2>Modules</h2>
+    <ul>
+        <li>Module 1: Pods, nodes, and cluster architecture</li>
+        <li>Module 2: Deployments, services, and ingress</li>
+        <li>Module 3: ConfigMaps, secrets, and storage</li>
+        <li>Module 4: Scaling and rollout strategies</li>
+    </ul>
+    <h2>Lessons Placeholder</h2>
+    <p>Upcoming lessons will include YAML labs and troubleshooting exercises.</p>
 </div>
 <script src="../js/translations.js"></script>
 <script src="../js/main.js?v=20260902"></script>
-<script>
-    const kubernetesCurriculum = [
-        ["Module 1: Kubernetes Fundamentals, Pods, Nodes &amp; Cluster Architecture", ["Introduction to Kubernetes and container orchestration", "Kubernetes architecture and core components", "Control plane vs. worker nodes", "Pods and containers", "Namespaces", "Labels and selectors", "Understanding Kubernetes objects and manifests", "Essential kubectl commands", "Inspecting cluster resources", "Hands-on: Create, inspect, and troubleshoot Pods"]],
-        ["Module 2: Deployments, ReplicaSets &amp; Application Management", ["ReplicaSets and desired state", "Deployments", "Creating and managing applications with YAML", "Updating application images", "Replica management", "Deployment history", "Rollouts and rollbacks", "Scaling applications", "Hands-on: Deploy and manage a multi-replica application"]],
-        ["Module 3: Kubernetes Services &amp; Networking", ["Kubernetes networking fundamentals", "Service discovery", "ClusterIP, NodePort, and LoadBalancer Services", "Selectors and endpoints", "DNS inside Kubernetes", "Service-to-Service communication", "Troubleshooting connectivity", "Hands-on: Expose and test an application using Services"]],
-        ["Module 4: Ingress &amp; Application Routing", ["Introduction to Ingress", "Ingress Controllers", "Host-based routing", "Path-based routing", "TLS/HTTPS", "Ingress annotations", "Troubleshooting Ingress", "Hands-on: Route traffic to multiple applications"]],
-        ["Module 5: ConfigMaps, Secrets &amp; Application Configuration", ["Externalizing application configuration", "ConfigMaps", "Secrets", "Environment variables", "Volumes and configuration files", "Secret management best practices", "Updating application configuration", "Hands-on: Configure an application using ConfigMaps and Secrets"]],
-        ["Module 6: Kubernetes Storage", ["Kubernetes storage concepts", "Volumes", "PersistentVolumes (PV)", "PersistentVolumeClaims (PVC)", "StorageClasses", "Dynamic provisioning", "Stateful applications", "Troubleshooting storage issues", "Hands-on: Deploy an application with persistent storage"]],
-        ["Module 7: Scaling &amp; Resource Management", ["Manual scaling", "Horizontal Pod Autoscaler (HPA)", "CPU and memory requests", "CPU and memory limits", "Resource scheduling", "ResourceQuota and LimitRange", "Understanding resource pressure", "Hands-on: Configure and test application autoscaling"]],
-        ["Module 8: Deployment Strategies &amp; Rollout Management", ["Rolling Updates", "Recreate strategy", "Blue-Green deployments", "Canary deployments", "Zero-downtime deployments", "Rollout status and history", "Rollbacks", "Managing failed deployments", "Hands-on: Perform controlled application releases"]],
-        ["Module 9: Kustomize &amp; Kubernetes Configuration Management", ["Introduction to Kustomize", "Bases and overlays", "kustomization.yaml", "Managing environments such as Development, Staging, and Production", "Patches and resource transformations", "ConfigMap and Secret generators", "Environment-specific configurations", "Kustomize with kubectl", "Hands-on: Build Dev, Staging, and Production configurations"]],
-        ["Module 10: Kubernetes Scheduling &amp; Workload Placement", ["Kubernetes scheduler", "Node labels and selectors", "Node affinity and anti-affinity", "Taints and tolerations", "Pod distribution", "Pod priority and preemption", "Controlling where workloads run", "Hands-on: Schedule workloads on specific nodes"]],
-        ["Module 11: Kubernetes Security &amp; RBAC", ["Kubernetes authentication and authorization", "ServiceAccounts", "Roles and ClusterRoles", "RoleBindings and ClusterRoleBindings", "kubectl auth can-i", "Namespace-based access control", "Secrets and security considerations", "Security best practices", "Hands-on: Create and test RBAC permissions"]],
-        ["Module 12: Health Checks &amp; Application Reliability", ["Liveness probes", "Readiness probes", "Startup probes", "Understanding Pod lifecycle", "Restart policies", "Handling application failures", "Designing reliable workloads", "Hands-on: Configure and troubleshoot health probes"]],
-        ["Module 13: Kubernetes Troubleshooting", ["A systematic Kubernetes troubleshooting methodology", "Troubleshooting Pods", "Pending, CrashLoopBackOff, ImagePullBackOff, and Error states", "Container logs", "Events", "kubectl describe", "Debugging Services and Endpoints", "Troubleshooting DNS and networking", "Troubleshooting ConfigMaps, Secrets, and volumes", "Debugging failed Deployments", "Node troubleshooting", "Using kubectl exec for investigation", "Hands-on: Real-world Kubernetes troubleshooting scenarios"]],
-        ["Module 14: Kubernetes Upgrades &amp; Cluster Maintenance", ["Kubernetes versioning", "Understanding Kubernetes release cycles", "Upgrade planning", "Compatibility considerations", "Backup and recovery considerations", "Upgrading control-plane components", "Upgrading worker nodes", "Drain, cordon, and uncordon", "Application availability during upgrades", "Post-upgrade validation", "Troubleshooting upgrade issues", "Hands-on: Perform a controlled Kubernetes cluster upgrade"]],
-        ["Module 15: Observability &amp; Monitoring", ["Introduction to Kubernetes observability", "Monitoring Pods, Nodes, and workloads", "Metrics and resource utilization", "Kubernetes events", "Logging fundamentals", "Prometheus", "Grafana", "Alerting", "Identifying application and cluster problems through metrics", "Hands-on: Monitor a Kubernetes application and investigate an alert"]],
-        ["Module 16: Kubernetes Administration &amp; Day-to-Day Operations", ["Cluster inspection and management", "Namespace management", "Managing workloads", "Resource cleanup", "Node maintenance", "Backup and recovery concepts", "Security checks", "Capacity management", "Operational best practices", "Building a daily Kubernetes administration checklist", "Hands-on: Complete a real-world Kubernetes operations lab"]]
-    ];
-    const finalProjectItems = ["Application Deployment", "Services", "Ingress", "ConfigMaps and Secrets", "Persistent Storage", "Resource Requests and Limits", "Health Probes", "Autoscaling", "Rolling Updates", "Deployment Rollback", "Kustomize Dev/Staging/Production overlays", "RBAC", "Monitoring and Alerting", "Troubleshooting", "Cluster maintenance and upgrade procedures"];
-    const frenchCurriculum = [
-        ["Module 1 : Fondamentaux Kubernetes, Pods, nœuds et architecture du cluster", ["Introduction à Kubernetes et à l’orchestration des conteneurs", "Architecture Kubernetes et composants essentiels", "Plan de contrôle et nœuds de travail", "Pods et conteneurs", "Espaces de noms", "Labels et sélecteurs", "Comprendre les objets et manifests Kubernetes", "Commandes kubectl essentielles", "Inspecter les ressources du cluster", "Pratique : créer, inspecter et dépanner des Pods"]],
-        ["Module 2 : Deployments, ReplicaSets et gestion des applications", ["ReplicaSets et état souhaité", "Deployments", "Créer et gérer des applications avec YAML", "Mettre à jour les images applicatives", "Gestion des réplicas", "Historique des Deployments", "Rollouts et rollbacks", "Mettre les applications à l’échelle", "Pratique : déployer et gérer une application à plusieurs réplicas"]],
-        ["Module 3 : Services Kubernetes et mise en réseau", ["Fondamentaux du réseau Kubernetes", "Découverte des services", "Services ClusterIP, NodePort et LoadBalancer", "Sélecteurs et endpoints", "DNS dans Kubernetes", "Communication entre services", "Dépanner la connectivité", "Pratique : exposer et tester une application avec des Services"]],
-        ["Module 4 : Ingress et routage des applications", ["Introduction à Ingress", "Contrôleurs Ingress", "Routage basé sur l’hôte", "Routage basé sur le chemin", "TLS/HTTPS", "Annotations Ingress", "Dépanner Ingress", "Pratique : router le trafic vers plusieurs applications"]],
-        ["Module 5 : ConfigMaps, Secrets et configuration des applications", ["Externaliser la configuration des applications", "ConfigMaps", "Secrets", "Variables d’environnement", "Volumes et fichiers de configuration", "Bonnes pratiques de gestion des secrets", "Mettre à jour la configuration d’une application", "Pratique : configurer une application avec ConfigMaps et Secrets"]],
-        ["Module 6 : Stockage Kubernetes", ["Concepts du stockage Kubernetes", "Volumes", "PersistentVolumes (PV)", "PersistentVolumeClaims (PVC)", "StorageClasses", "Provisionnement dynamique", "Applications avec état", "Dépanner les problèmes de stockage", "Pratique : déployer une application avec un stockage persistant"]],
-        ["Module 7 : Mise à l’échelle et gestion des ressources", ["Mise à l’échelle manuelle", "Horizontal Pod Autoscaler (HPA)", "Demandes CPU et mémoire", "Limites CPU et mémoire", "Planification des ressources", "ResourceQuota et LimitRange", "Comprendre la pression sur les ressources", "Pratique : configurer et tester l’autoscaling d’une application"]],
-        ["Module 8 : Stratégies de déploiement et gestion des rollouts", ["Mises à jour progressives", "Stratégie Recreate", "Déploiements Blue-Green", "Déploiements Canary", "Déploiements sans interruption", "État et historique des rollouts", "Rollbacks", "Gérer les déploiements échoués", "Pratique : effectuer des mises en production contrôlées"]],
-        ["Module 9 : Kustomize et gestion de configuration Kubernetes", ["Introduction à Kustomize", "Bases et overlays", "kustomization.yaml", "Gérer les environnements Développement, Préproduction et Production", "Patches et transformations de ressources", "Générateurs de ConfigMap et Secret", "Configurations propres à chaque environnement", "Kustomize avec kubectl", "Pratique : construire les configurations Développement, Préproduction et Production"]],
-        ["Module 10 : Planification Kubernetes et placement des workloads", ["Planificateur Kubernetes", "Labels et sélecteurs de nœuds", "Affinité et anti-affinité des nœuds", "Taints et tolerations", "Distribution des Pods", "Priorité et préemption des Pods", "Contrôler l’emplacement des workloads", "Pratique : planifier des workloads sur des nœuds précis"]],
-        ["Module 11 : Sécurité Kubernetes et RBAC", ["Authentification et autorisation Kubernetes", "ServiceAccounts", "Roles et ClusterRoles", "RoleBindings et ClusterRoleBindings", "kubectl auth can-i", "Contrôle d’accès par espace de noms", "Secrets et considérations de sécurité", "Bonnes pratiques de sécurité", "Pratique : créer et tester des permissions RBAC"]],
-        ["Module 12 : Contrôles de santé et fiabilité des applications", ["Sondes de vivacité", "Sondes de disponibilité", "Sondes de démarrage", "Comprendre le cycle de vie d’un Pod", "Politiques de redémarrage", "Gérer les défaillances applicatives", "Concevoir des workloads fiables", "Pratique : configurer et dépanner les sondes de santé"]],
-        ["Module 13 : Dépannage Kubernetes", ["Méthodologie systématique de dépannage Kubernetes", "Dépanner les Pods", "États Pending, CrashLoopBackOff, ImagePullBackOff et Error", "Journaux des conteneurs", "Événements", "kubectl describe", "Déboguer les Services et Endpoints", "Dépanner le DNS et le réseau", "Dépanner les ConfigMaps, Secrets et volumes", "Déboguer les Deployments échoués", "Dépanner les nœuds", "Utiliser kubectl exec pour enquêter", "Pratique : scénarios de dépannage Kubernetes réels"]],
-        ["Module 14 : Mises à niveau Kubernetes et maintenance du cluster", ["Versions Kubernetes", "Comprendre les cycles de publication Kubernetes", "Planifier une mise à niveau", "Considérations de compatibilité", "Sauvegarde et récupération", "Mettre à niveau les composants du plan de contrôle", "Mettre à niveau les nœuds de travail", "Drain, cordon et uncordon", "Disponibilité des applications pendant les mises à niveau", "Validation après mise à niveau", "Dépanner les problèmes de mise à niveau", "Pratique : effectuer une mise à niveau contrôlée du cluster"]],
-        ["Module 15 : Observabilité et supervision", ["Introduction à l’observabilité Kubernetes", "Superviser les Pods, nœuds et workloads", "Métriques et utilisation des ressources", "Événements Kubernetes", "Fondamentaux des journaux", "Prometheus", "Grafana", "Alertes", "Identifier les problèmes applicatifs et du cluster grâce aux métriques", "Pratique : superviser une application Kubernetes et analyser une alerte"]],
-        ["Module 16 : Administration Kubernetes et opérations quotidiennes", ["Inspection et gestion du cluster", "Gestion des espaces de noms", "Gérer les workloads", "Nettoyage des ressources", "Maintenance des nœuds", "Concepts de sauvegarde et récupération", "Contrôles de sécurité", "Gestion de la capacité", "Bonnes pratiques opérationnelles", "Établir une checklist quotidienne d’administration Kubernetes", "Pratique : réaliser un laboratoire d’opérations Kubernetes réel"]]
-    ];
-    const frenchFinalProjectItems = ["Déploiement d’applications", "Services", "Ingress", "ConfigMaps et Secrets", "Stockage persistant", "Demandes et limites de ressources", "Sondes de santé", "Mise à l’échelle automatique", "Mises à jour progressives", "Rollback du déploiement", "Overlays Kustomize Développement/Préproduction/Production", "RBAC", "Supervision et alertes", "Dépannage", "Procédures de maintenance et de mise à niveau du cluster"];
-    const k8sStaticTranslations = {
-        k8s_title: ["Kubernetes Fundamentals & Operations", "Fondamentaux et opérations Kubernetes"],
-        k8s_hero_intro: ["Build practical skills for deploying, managing, scaling, updating, and troubleshooting applications in Kubernetes clusters.", "Développez les compétences pratiques pour déployer, gérer, mettre à l’échelle, mettre à jour et dépanner des applications dans des clusters Kubernetes."],
-        k8s_introduction: ["Introduction", "Introduction"],
-        k8s_intro_text: ["This track helps beginners build a strong foundation in Kubernetes and progressively develop the practical skills needed to deploy, manage, scale, update, and troubleshoot applications running in Kubernetes clusters.", "Ce parcours aide les débutants à établir des bases solides en Kubernetes et à développer progressivement les compétences pratiques nécessaires pour déployer, gérer, mettre à l’échelle, mettre à jour et dépanner des applications exécutées dans des clusters Kubernetes."],
-        k8s_practical_text: ["Through hands-on exercises, learners will work with core Kubernetes resources, application deployment, networking, configuration, storage, security, scaling, deployment strategies, Kustomize, cluster upgrades, and day-to-day troubleshooting.", "Grâce à des exercices pratiques, les apprenants travailleront avec les ressources Kubernetes essentielles, le déploiement d’applications, le réseau, la configuration, le stockage, la sécurité, la mise à l’échelle, les stratégies de déploiement, Kustomize, les mises à niveau de clusters et le dépannage quotidien."],
-        k8s_modules: ["Modules", "Modules"],
-        k8s_final_project_title: ["Practical Final Project", "Projet final pratique"],
-        k8s_final_project_intro: ["Learners will deploy and operate a complete application environment in Kubernetes, including:", "Les apprenants déploieront et exploiteront un environnement applicatif complet dans Kubernetes, comprenant :"],
-        k8s_learning_outcome_title: ["Learning Outcome", "Objectif pédagogique"],
-        k8s_learning_outcome: ["By the end of this track, learners will be able to deploy, configure, expose, scale, secure, update, troubleshoot, monitor, and maintain Kubernetes workloads and confidently perform common day-to-day Kubernetes administration tasks.", "À la fin de ce parcours, les apprenants sauront déployer, configurer, exposer, mettre à l’échelle, sécuriser, mettre à jour, dépanner, superviser et maintenir des workloads Kubernetes, et effectuer avec assurance les tâches courantes d’administration Kubernetes au quotidien."]
-    };
-    function registerKubernetesTranslations() {
-        Object.entries(k8sStaticTranslations).forEach(([key, values]) => { translations.en[key] = values[0]; translations.fr[key] = values[1]; });
-        kubernetesCurriculum.forEach((module, moduleIndex) => {
-            translations.en[`k8s_m${moduleIndex + 1}_title`] = module[0].replace(/&amp;/g, '&');
-            translations.fr[`k8s_m${moduleIndex + 1}_title`] = frenchCurriculum[moduleIndex][0];
-            module[1].forEach((item, itemIndex) => {
-                translations.en[`k8s_m${moduleIndex + 1}_i${itemIndex + 1}`] = item;
-                translations.fr[`k8s_m${moduleIndex + 1}_i${itemIndex + 1}`] = frenchCurriculum[moduleIndex][1][itemIndex];
-            });
-        });
-        finalProjectItems.forEach((item, index) => {
-            translations.en[`k8s_final_${index + 1}`] = item;
-            translations.fr[`k8s_final_${index + 1}`] = frenchFinalProjectItems[index];
-        });
-    }
-    function renderKubernetesCurriculum() {
-        registerKubernetesTranslations();
-        const moduleContainer = document.getElementById('kubernetes-modules');
-        moduleContainer.innerHTML = kubernetesCurriculum.map((module, index) => `
-            <section class="curriculum-module">
-                <h3 data-lang="k8s_m${index + 1}_title">${module[0]}</h3>
-                <ul>${module[1].map((_, itemIndex) => `<li data-lang="k8s_m${index + 1}_i${itemIndex + 1}"></li>`).join('')}</ul>
-            </section>
-        `).join('');
-        const finalProject = document.getElementById('k8s-final-project');
-        finalProject.innerHTML = finalProjectItems.map((_, index) => `<li data-lang="k8s_final_${index + 1}"></li>`).join('');
-        applyTranslations();
-    }
-    renderKubernetesCurriculum();
-</script>
 </body>
 </html>
