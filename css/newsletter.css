@@ -145,3 +145,124 @@
         font-size: 1.1em;
     }
 }
+
+/* FULL NEWSLETTER ARTICLE */
+
+.newsletter-article-page {
+    background: #000;
+    min-height: 100vh;
+}
+
+.newsletter-article-container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 110px 20px 80px;
+}
+
+.newsletter-full-article {
+    background: #1a1a1a;
+    border: 1px solid #333;
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.newsletter-full-article-header {
+    padding: 45px 50px 30px;
+}
+
+.newsletter-full-article-category {
+    color: #64ffda;
+    font-size: 0.9em;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+}
+
+.newsletter-full-article-title {
+    font-family: 'Poppins', sans-serif;
+    color: white;
+    font-size: 2.8em;
+    line-height: 1.2;
+    margin: 14px 0 18px;
+}
+
+.newsletter-full-article-description {
+    color: #ccc;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 1.1em;
+    line-height: 1.7;
+    margin: 0;
+}
+
+.newsletter-full-article-meta {
+    color: #999;
+    margin-top: 20px;
+    font-size: 0.95em;
+}
+
+.newsletter-full-article-image {
+    display: block;
+    width: 100%;
+    max-height: 520px;
+    object-fit: contain;
+    background: #000;
+}
+
+.newsletter-full-article-content {
+    padding: 35px 50px;
+    color: #e0e0e0;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 1.05em;
+    line-height: 1.8;
+}
+
+.newsletter-full-article-content p {
+    margin: 0 0 22px;
+}
+
+.newsletter-full-article-content h2 {
+    font-family: 'Poppins', sans-serif;
+    color: #64ffda;
+    margin: 35px 0 15px;
+    line-height: 1.3;
+}
+
+.newsletter-full-article-content blockquote {
+    margin: 25px 0;
+    padding: 18px 22px;
+    border-left: 4px solid #64ffda;
+    background: #111;
+    color: #ccc;
+}
+
+.newsletter-full-article-footer {
+    padding: 0 50px 45px;
+}
+
+.newsletter-full-article-footer .cta-button,
+.newsletter-error .cta-button {
+    display: inline-block;
+    text-decoration: none;
+}
+
+@media (max-width: 700px) {
+    .newsletter-article-container {
+        padding: 90px 15px 50px;
+    }
+
+    .newsletter-full-article-header {
+        padding: 30px 25px 20px;
+    }
+
+    .newsletter-full-article-title {
+        font-size: 2em;
+    }
+
+    .newsletter-full-article-content {
+        padding: 25px;
+    }
+
+    .newsletter-full-article-footer {
+        padding: 0 25px 30px;
+    }
+}
