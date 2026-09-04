@@ -2,71 +2,172 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>FOMA Article</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Open+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../css/styles.css">
+    <link rel="stylesheet" href="../css/blog-post.css">
     <link rel="icon" type="image/png" sizes="32x32" href="../images/Official-logo.png">
     <link rel="icon" type="image/png" sizes="16x16" href="../images/Official-logo.png">
     <link rel="apple-touch-icon" href="../images/Official-logo.png">
     <link rel="shortcut icon" href="../images/Official-logo.png">
     <meta name="theme-color" content="#000000">
-
 </head>
 
-<body>
+<body class="blog-post-article">
 
-<div class="article" id="article-container">
-    <h1>Loading...</h1>
+<div class="post-header">
+    <div class="post-header-content" id="article-header">
+        <span class="post-category">DevOps</span>
+        <h1 class="post-title">Loading...</h1>
+        <div class="post-meta">
+            <span class="post-author">By William Foma</span>
+            <span class="post-date"></span>
+        </div>
+    </div>
 </div>
 
+<main class="post-content">
+    <div class="post-section" id="article-container">
+        <p>Loading article...</p>
+    </div>
+</main>
+
 <script>
+    const CMS_API_BASE = "https://admin.foma.life/api/articles";
+    const DEFAULT_AUTHOR = "William Foma";
     const params = new URLSearchParams(window.location.search);
-    const id = params.get("id");
+    const documentId = params.get("id");
+
+    function escapeHtml(value) {
+        return String(value ?? "")
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/\"/g, "&quot;")
+            .replace(/'/g, "&#039;");
+    }
+
+    function textFromChildren(children) {
+        if (!Array.isArray(children)) return "";
+        return children.map(child => child?.text || "").join("");
+    }
+
+    function formatContent(content) {
+        if (!Array.isArray(content)) return "";
+
+        return content.map(block => {
+            const type = block?.type || "paragraph";
+            const text = escapeHtml(textFromChildren(block?.children));
+
+            if (type === "heading") {
+                const level = Math.min(Math.max(Number(block?.level) || 2, 2), 4);
+                return `<h${level}>${text}</h${level}>`;
+            }
+
+            if (type === "paragraph") {
+                return `<p>${text || "&nbsp;"}</p>`;
+            }
+
+            if (type === "quote") {
+                return `<blockquote>${text}</blockquote>`;
+            }
+
+            if (type === "code") {
+                return `<pre class="code-block"><code>${text}</code></pre>`;
+            }
+
+            if (type === "list") {
+                const tag = block.format === "ordered" ? "ol" : "ul";
+                const items = Array.isArray(block.children)
+                    ? block.children.map(item => `<li>${escapeHtml(textFromChildren(item?.children || []))}</li>`).join("")
+                    : "";
+                return `<${tag}>${items}</${tag}>`;
+            }
+
+            return text ? `<p>${text}</p>` : "";
+        }).join("");
+    }
+
+    function formatDate(dateString) {
+        if (!dateString) return "";
+        const date = new Date(dateString);
+        if (Number.isNaN(date.getTime())) return "";
+        return date.toLocaleDateString("en-US", {
+            year: "numeric",
+            month: "long",
+            day: "numeric"
+        });
+    }
 
     async function loadArticle() {
+        const container = document.getElementById("article-container");
+        const header = document.getElementById("article-header");
+
+        if (!documentId) {
+            container.innerHTML = "<h2>Article not found</h2>";
+            return;
+        }
+
         try {
-            const res = await fetch(`http://localhost:1337/api/articles?filters[documentId][$eq]=${id}&populate=*`);
-            const result = await res.json();
+            const url = `${CMS_API_BASE}?filters[documentId][$eq]=${encodeURIComponent(documentId)}&populate=*`;
+            const response = await fetch(url, { cache: "no-store" });
 
-            const article = result.data[0];
+            if (!response.ok) {
+                throw new Error(`CMS request failed with status ${response.status}`);
+            }
 
-            const container = document.getElementById("article-container");
+            const result = await response.json();
+            const article = Array.isArray(result.data) ? result.data[0] : null;
 
             if (!article) {
                 container.innerHTML = "<h2>Article not found</h2>";
                 return;
             }
 
-            const data = article;
+            const data = article.attributes || article;
+            const title = data.title || "FOMA Article";
+            const description = data.description || "";
+            const category = data.category || "DevOps";
+            const author = DEFAULT_AUTHOR;
+            const date = formatDate(data.date || data.publishedAt || data.createdAt);
+
+            const imageUrl = data?.image?.url || data?.image?.data?.attributes?.url || "";
+            const fullImageUrl = imageUrl
+                ? (imageUrl.startsWith("http") ? imageUrl : `https://admin.foma.life${imageUrl}`)
+                : "";
+
+            document.title = `${title} | FOMA`;
+            header.querySelector(".post-category").textContent = category;
+            header.querySelector(".post-title").textContent = title;
+            header.querySelector(".post-author").textContent = `By ${author}`;
+            header.querySelector(".post-date").textContent = date;
+
+            const imageHtml = fullImageUrl
+                ? `<img class="post-featured-image" src="${escapeHtml(fullImageUrl)}" alt="${escapeHtml(title)}">`
+                : "";
 
             container.innerHTML = `
-                <h1>${data.title}</h1>
-                <p>${data.description}</p>
-                <div>${formatContent(data.content)}</div>
+                ${imageHtml}
+                ${description ? `<p><strong>${escapeHtml(description)}</strong></p>` : ""}
+                <div class="cms-content">${formatContent(data.content)}</div>
+                <div class="article-signature" aria-label="Article signature">
+                    <p><strong>— ${author}</strong></p>
+                </div>
             `;
-
-        } catch (err) {
-            console.error("Error loading article:", err);
-            document.getElementById("article-container").innerHTML =
-                "<h2>Unable to load the article, please try again.</h2>";
+        } catch (error) {
+            console.error("Error loading CMS article:", error);
+            container.innerHTML = "<h2>Unable to load the article, please try again.</h2>";
         }
-    }
-
-    function formatContent(content) {
-        if (!content) return "";
-
-        return content.map(block => {
-            if (block.type === "heading") {
-                return `<h2>${block.children[0].text}</h2>`;
-            }
-            if (block.type === "paragraph") {
-                return `<p>${block.children.map(c => c.text).join("")}</p>`;
-            }
-            return "";
-        }).join("");
     }
 
     loadArticle();
 </script>
+
+<script src="../js/translations.js"></script>
+<script src="../js/main.js?v=20260904"></script>
 
 </body>
 </html>
