@@ -36,3 +36,4 @@ node_modules/
 # AWS SAM build artifacts
 # =========================
 backend/.aws-sam/
+.aws-sam/
