@@ -46,10 +46,26 @@ function getPostText(value) {
     return "";
 }
 
-function getCmsImageUrl(data) {
+// Default fallback image per category, used when a CMS article has no image.
+const CATEGORY_DEFAULT_IMAGES = {
+    docker: "images/docker.png",
+    kubernetes: "images/kubernetes.png",
+    terraform: "images/terraform.png",
+    cicd: "images/cicd.png",
+    cloud: "images/cloud.png",
+    linux: "images/linux.png",
+    devops: "images/devops.jpg",
+    devsecops: "images/devsecops.png"
+};
+
+function getDefaultImageForCategory(category) {
+    return CATEGORY_DEFAULT_IMAGES[category] || "images/devops.jpg";
+}
+
+function getCmsImageUrl(data, category) {
     const image = data?.image;
     const url = image?.url || image?.data?.attributes?.url || "";
-    if (!url) return "images/devops.jpg";
+    if (!url) return getDefaultImageForCategory(category);
     return url.startsWith("http") ? url : `https://admin.foma.life${url}`;
 }
 
@@ -70,7 +86,7 @@ function mapCmsArticle(article) {
             fr: getPostText(data.description) || "Explore this DevOps article."
         },
         category,
-        image: getCmsImageUrl(data),
+        image: getCmsImageUrl(data, category),
         date: data.date || data.publishedAt || data.createdAt || "",
         author: DEFAULT_AUTHOR,
         isCms: true
@@ -264,7 +280,7 @@ function createPostCard(post) {
 
     return `
         <div class="blog-card">
-            <img src="${escapeHtml(post.image || "images/devops.jpg")}" alt="${title}" class="blog-card-image" loading="lazy">
+            <img src="${escapeHtml(post.image || getDefaultImageForCategory(normalizeCategory(post.category)))}" alt="${title}" class="blog-card-image" loading="lazy">
             <div class="blog-card-content">
                 <span class="blog-card-category">${category}</span>
                 <h3>${title}</h3>
