@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>FOMA Newsletter</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Open+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/newsletter.css">
+
+    <link rel="icon" type="image/png" sizes="32x32" href="images/Official-logo.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="images/Official-logo.png">
+    <link rel="apple-touch-icon" href="images/Official-logo.png">
+    <link rel="shortcut icon" href="images/Official-logo.png">
+
+    <meta name="theme-color" content="#000000">
+</head>
+
+<body>
+
+<section class="newsletter-hero">
+    <div class="newsletter-hero-content">
+        <h1 data-lang="newsletter_hero_title">FOMA Newsletter</h1>
+        <p data-lang="newsletter_hero_subtitle">
+            Practical DevOps, DevSecOps, Cloud, Kubernetes and automation insights.
+        </p>
+    </div>
+
+    <a href="/" class="newsletter-back-home-btn" data-lang="back_home">
+        Back to Home
+    </a>
+
+    <div class="newsletter-language-switch">
+        <button onclick="setLanguage('en')">EN</button>
+        <button onclick="setLanguage('fr')">FR</button>
+    </div>
+</section>
+
+<section class="newsletter-posts">
+    <div class="newsletter-posts-container" id="newsletterContainer">
+        <div class="newsletter-loading" data-lang="newsletter_loading">
+            Loading newsletters...
+        </div>
+    </div>
+</section>
+
+<script src="js/translations.js"></script>
+<script src="js/newsletter.js"></script>
+<script src="js/main.js?v=20260902"></script>
+
+</body>
+</html>
