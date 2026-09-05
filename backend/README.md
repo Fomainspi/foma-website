@@ -157,3 +157,5 @@ the registration write. If SES fails after the DynamoDB write, the user can
 still receive the successful registration response while the failure is
 logged for follow-up. This prevents a mail delivery problem from causing a
 successful application to be lost.
+
+Newsletter deployment trigger verification: backend changes are deployed from `main` via GitHub Actions.
