@@ -33,13 +33,22 @@ admin email confirms the production registration path is functioning.
 ## Newsletter
 
 The newsletter subscription endpoint uses Amazon SES contact-list management.
-A shared SES contact list named `FOMA-Newsletter` is created by the subscription
-Lambda when first needed, avoiding CloudFormation contact-list tagging
-requirements. The list contains the `FOMA-Newsletter` topic.
+The SES contact list `FOMA-Newsletter` (and its `FOMA-Newsletter` topic) is
+created exactly once as infrastructure by the SAM/CloudFormation stack via the
+`AWS::SES::ContactList` resource, with the name controlled by the
+`NewsletterContactListName` template parameter. It is never created at request
+time, so repeated subscriptions cannot hit the SES account contact-list limit.
+
+The subscription Lambda only manages contacts inside the existing list: it
+calls `CreateContact` for a new email and, if the contact already exists,
+updates its topic preferences (`GetContact` + `UpdateContact`), so subscribing
+the same email twice is idempotent and returns success both times.
 
 A successful subscription explicitly opts the visitor into that topic and
-sends a welcome email through SES with an unsubscribe link. Newsletter
-subscriptions are separate from bootcamp registration records.
+sends a welcome email through SES with an unsubscribe link. A welcome-email
+failure is logged but does not fail an otherwise successful subscription, and
+a successful subscription returns HTTP 201. Newsletter subscriptions are
+separate from bootcamp registration records.
 
 ## Architecture
 
@@ -83,6 +92,8 @@ environment through `samconfig.toml`.
   in DynamoDB, sends the admin notification, and optionally sends a student
   confirmation.
 - `src/functions/subscribe/index.mjs` — Newsletter subscription Lambda.
+- `src/functions/subscribe/index.test.mjs` — Unit tests for the subscription
+  Lambda (`cd src/functions/subscribe && npm install && npm test`).
 - `src/functions/register/package.json` — Lambda dependencies.
 - `samconfig.toml` — Separate deployment configuration for Dev and Production.
 - `events/register-event.json` — Sample event for local testing.
@@ -103,6 +114,16 @@ The admin notification recipient is always taken from the server-side
 cd backend
 sam build
 sam deploy --config-env dev
+```
+
+Note: the stack declares the `FOMA-Newsletter` SES contact list as a
+`AWS::SES::ContactList` resource. If a list with the same name already exists
+in the account/region but is not managed by the stack, import it into the
+stack first (the resource has `DeletionPolicy: Retain`):
+
+```bash
+aws sesv2 list-contact-lists --region ap-southeast-1
+# then import resource "NewsletterContactList" with identifier "FOMA-Newsletter"
 ```
 
 ## Deploying Production

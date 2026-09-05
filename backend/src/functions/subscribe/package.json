@@ -5,6 +5,9 @@
   "description": "FOMA newsletter subscription Lambda using Amazon SES list management.",
   "type": "module",
   "main": "index.mjs",
+  "scripts": {
+    "test": "node --test"
+  },
   "dependencies": {
     "@aws-sdk/client-sesv2": "^3.1125.0"
   }
