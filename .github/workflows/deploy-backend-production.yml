@@ -52,3 +52,15 @@ jobs:
             --stack-name foma-backend-prod \
             --query 'Stacks[0].Outputs[?OutputKey==`ApiEndpoint` || OutputKey==`RegisterEndpoint` || OutputKey==`NewsletterSubscribeEndpoint`].[OutputKey,OutputValue]' \
             --output table
+
+      - name: Smoke test production newsletter subscription
+        run: |
+          set -euo pipefail
+          endpoint="https://7gd3r709wf.execute-api.ap-southeast-1.amazonaws.com/prod/newsletter/subscribe"
+          response_file="/tmp/newsletter-response.json"
+          http_code=$(curl -sS -o "$response_file" -w "%{http_code}" \
+            -X POST "$endpoint" \
+            -H 'Content-Type: application/json' \
+            --data '{"email":"success@simulator.amazonses.com"}')
+          cat "$response_file"
+          test "$http_code" = "201"
