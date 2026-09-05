@@ -1,4 +1,4 @@
-import { SESv2Client, CreateContactCommand, GetContactCommand, UpdateContactCommand, SendEmailCommand } from "@aws-sdk/client-sesv2";
+import { SESv2Client, CreateContactListCommand, CreateContactCommand, GetContactCommand, UpdateContactCommand, SendEmailCommand } from "@aws-sdk/client-sesv2";
 
 const sesClient = new SESv2Client({});
 const ENVIRONMENT_NAME = process.env.ENVIRONMENT_NAME || "dev";
@@ -19,7 +19,32 @@ function jsonResponse(statusCode, body) {
     };
 }
 
+async function ensureContactList() {
+    try {
+        await sesClient.send(new CreateContactListCommand({
+            ContactListName: CONTACT_LIST_NAME,
+            Description: "FOMA Foundation of Mastering Automation newsletter subscribers.",
+            Topics: [
+                {
+                    TopicName: TOPIC_NAME,
+                    DisplayName: "FOMA Newsletter",
+                    Description: "Practical DevOps, DevSecOps, Cloud, Kubernetes and automation insights from Foundation of Mastering Automation.",
+                    DefaultSubscriptionStatus: "OPT_OUT"
+                }
+            ]
+        }));
+    } catch (error) {
+        // SES permits only one contact list per account. If another invocation
+        // already created the shared FOMA list, it is safe to continue.
+        if (error?.name !== "AlreadyExistsException") {
+            throw error;
+        }
+    }
+}
+
 async function upsertContact(email) {
+    await ensureContactList();
+
     const contact = {
         ContactListName: CONTACT_LIST_NAME,
         EmailAddress: email,
