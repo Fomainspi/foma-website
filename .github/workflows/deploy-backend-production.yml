@@ -7,6 +7,7 @@ on:
     paths:
       - 'backend/**'
       - '.github/workflows/deploy-backend-production.yml'
+  workflow_dispatch:
 
 permissions:
   contents: read
@@ -49,7 +50,5 @@ jobs:
         run: |
           aws cloudformation describe-stacks \
             --stack-name foma-backend-prod \
-            --query 'Stacks[0].Outputs[?OutputKey==`ApiEndpoint` || OutputKey==`RegisterEndpoint`].[OutputKey,OutputValue]' \
+            --query 'Stacks[0].Outputs[?OutputKey==`ApiEndpoint` || OutputKey==`RegisterEndpoint` || OutputKey==`NewsletterSubscribeEndpoint`].[OutputKey,OutputValue]' \
             --output table
-
-# Trigger deployment after newsletter backend permission fix.
