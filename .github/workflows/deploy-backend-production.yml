@@ -51,3 +51,5 @@ jobs:
             --stack-name foma-backend-prod \
             --query 'Stacks[0].Outputs[?OutputKey==`ApiEndpoint` || OutputKey==`RegisterEndpoint`].[OutputKey,OutputValue]' \
             --output table
+
+# Trigger deployment after newsletter backend permission fix.
