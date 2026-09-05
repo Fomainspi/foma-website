@@ -38,9 +38,6 @@ Parameters:
     Type: Number
     Default: 10
 
-Conditions:
-  IsProduction: !Equals [!Ref EnvironmentName, prod]
-
 Globals:
   Function:
     Runtime: nodejs22.x
@@ -52,20 +49,6 @@ Globals:
         ENVIRONMENT_NAME: !Ref EnvironmentName
 
 Resources:
-  # SES supports one contact list per AWS account, so the production stack
-  # owns the shared FOMA newsletter list used by both environments.
-  NewsletterContactList:
-    Type: AWS::SES::ContactList
-    Condition: IsProduction
-    Properties:
-      ContactListName: FOMA-Newsletter
-      Description: FOMA Foundation of Mastering Automation newsletter subscribers.
-      Topics:
-        - TopicName: FOMA-Newsletter
-          DisplayName: FOMA Newsletter
-          Description: Practical DevOps, DevSecOps, Cloud, Kubernetes and automation insights from Foundation of Mastering Automation.
-          DefaultSubscriptionStatus: OPT_OUT
-
   RegistrationsTable:
     Type: AWS::Serverless::SimpleTable
     Properties:
@@ -143,6 +126,7 @@ Resources:
             - Sid: ManageFomaNewsletterContacts
               Effect: Allow
               Action:
+                - ses:CreateContactList
                 - ses:CreateContact
                 - ses:GetContact
                 - ses:UpdateContact
