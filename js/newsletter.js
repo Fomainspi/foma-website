@@ -15,23 +15,14 @@ function getNewsletterImage(data) {
     const image = data?.image;
     const url = image?.url || image?.data?.attributes?.url || "";
 
-    if (!url) {
-        return "images/devops.jpg";
-    }
-
-    return url.startsWith("http")
-        ? url
-        : `https://admin.foma.life${url}`;
+    if (!url) return "images/devops.jpg";
+    return url.startsWith("http") ? url : `https://admin.foma.life${url}`;
 }
 
 function formatNewsletterDate(dateValue) {
     if (!dateValue) return "";
-
     const date = new Date(dateValue);
-
-    if (Number.isNaN(date.getTime())) {
-        return "";
-    }
+    if (Number.isNaN(date.getTime())) return "";
 
     return date.toLocaleDateString(currentLang === "fr" ? "fr-FR" : "en-US", {
         year: "numeric",
@@ -42,17 +33,13 @@ function formatNewsletterDate(dateValue) {
 
 function initializeNewsletter() {
     const container = document.getElementById("newsletterContainer");
-
     if (!container) return;
-
     loadNewsletters(container);
 }
 
 async function loadNewsletters(container) {
     try {
-        const response = await fetch(NEWSLETTER_API_URL, {
-            cache: "no-store"
-        });
+        const response = await fetch(NEWSLETTER_API_URL, { cache: "no-store" });
 
         if (!response.ok) {
             throw new Error(`Newsletter request failed with status ${response.status}`);
@@ -79,56 +66,29 @@ async function loadNewsletters(container) {
 
         container.innerHTML = newsletters.map(newsletter => {
             const data = newsletter?.attributes || newsletter || {};
-
             const title = data.title || "FOMA Newsletter";
             const description = data.description || "";
             const category = data.category || "FOMA";
             const author = data.author || "William Foma";
-            const date = formatNewsletterDate(
-                data.date || data.publishedAt || data.createdAt
-            );
+            const date = formatNewsletterDate(data.date || data.publishedAt || data.createdAt);
             const image = getNewsletterImage(data);
             const documentId = data.documentId || newsletter?.documentId || newsletter?.id;
 
             return `
                 <article class="newsletter-card">
-                    <img
-                        src="${escapeNewsletterHtml(image)}"
-                        alt="${escapeNewsletterHtml(title)}"
-                        class="newsletter-card-image"
-                        loading="lazy"
-                    >
-
+                    <img src="${escapeNewsletterHtml(image)}" alt="${escapeNewsletterHtml(title)}" class="newsletter-card-image" loading="lazy">
                     <div class="newsletter-card-content">
-                        <span class="newsletter-card-category">
-                            ${escapeNewsletterHtml(category)}
-                        </span>
-
-                        <h2 class="newsletter-card-title">
-                            ${escapeNewsletterHtml(title)}
-                        </h2>
-
-                        <p class="newsletter-card-description">
-                            ${escapeNewsletterHtml(description)}
-                        </p>
-
+                        <span class="newsletter-card-category">${escapeNewsletterHtml(category)}</span>
+                        <h2 class="newsletter-card-title">${escapeNewsletterHtml(title)}</h2>
+                        <p class="newsletter-card-description">${escapeNewsletterHtml(description)}</p>
                         <div class="newsletter-card-meta">
-                            ${date ? `${escapeNewsletterHtml(date)} · ` : ""}
-                            ${escapeNewsletterHtml(author)}
+                            ${date ? `${escapeNewsletterHtml(date)} · ` : ""}${escapeNewsletterHtml(author)}
                         </div>
-
-                        ${
-                            documentId
-                                ? `
-                                    <a
-                                        href="/newsletter/article?id=${encodeURIComponent(documentId)}"
-                                        class="cta-button newsletter-read-more"
-                                    >
-                                        <span data-lang="newsletter_read_more">Read Newsletter</span>
-                                    </a>
-                                `
-                                : ""
-                        }
+                        ${documentId ? `
+                            <a href="/newsletter/article?id=${encodeURIComponent(documentId)}" class="cta-button newsletter-read-more">
+                                <span data-lang="newsletter_read_more">Read Newsletter</span>
+                            </a>
+                        ` : ""}
                     </div>
                 </article>
             `;
@@ -138,13 +98,14 @@ async function loadNewsletters(container) {
     } catch (error) {
         console.error("Unable to load newsletters:", error);
 
+        // The CMS feed is independent from the subscription service.
+        // Do not make a CMS outage look like a subscription failure.
         container.innerHTML = `
             <div class="newsletter-error">
-                <h3 data-lang="newsletter_error">Unable to load newsletters.</h3>
+                <h3>Newsletter articles are temporarily unavailable.</h3>
+                <p>You can still subscribe above to receive future FOMA updates.</p>
             </div>
         `;
-
-        applyTranslations();
     }
 }
 
