@@ -1,18 +1,13 @@
 AWSTemplateFormatVersion: '2010-09-09'
 Transform: AWS::Serverless-2016-10-31
 Description: >
-  FOMA Bootcamp Registration backend (new, from-scratch stack).
-  This template is deployed once per environment (Dev, Production) as a
-  completely separate CloudFormation stack, so that each environment gets
-  its own API, Lambda, DynamoDB table, and IAM role with no shared
-  resources between environments. It does NOT touch, reference, or depend
-  on the legacy "bootcamp-registration" Lambda/API/database, which remains
-  a frozen, untouched rollback path.
+  FOMA serverless backend for Bootcamp registration and newsletter subscriptions.
+  Dev and Production use separate CloudFormation stacks and runtime resources.
+  The legacy bootcamp-registration backend remains untouched as a rollback path.
 
 Parameters:
   EnvironmentName:
     Type: String
-    Description: Deployment environment name. Used to suffix/name all resources so Dev and Production never share a resource.
     AllowedValues:
       - dev
       - prod
@@ -20,51 +15,31 @@ Parameters:
 
   AllowedOrigin:
     Type: String
-    Description: >
-      Exact origin (scheme + host, no trailing slash) allowed to call this API via CORS.
-      Example: https://dev.foma.life for Dev, https://foma.life for Production.
+    Description: Exact website origin allowed to call the HTTP API.
 
   SesSenderEmail:
     Type: String
-    Description: >
-      SES-verified "From" address used to send admin notification and student
-      confirmation emails for this environment. Must be verified in SES before deploying
-      (SES sandbox requires verification of both sender and recipient).
+    Description: SES-verified From address used for FOMA emails.
 
   SesAdminRecipientEmail:
     Type: String
-    Description: >
-      Destination address for the admin notification email (e.g. the FOMA Titan mailbox).
-      This is fixed server-side configuration; the Lambda never trusts a caller-supplied
-      notification address from the request body.
+    Description: FOMA admin mailbox receiving registration notifications.
 
   SesAllowedTestRecipients:
     Type: CommaDelimitedList
     Default: ""
-    Description: >
-      Dev-only safety allowlist. Comma-separated list of SES-verified email addresses that
-      are permitted to receive the optional student confirmation email while testing.
-      In Dev, if the student's email is not in this list, the confirmation email is skipped
-      (registration + admin notification still succeed) to prevent accidentally emailing
-      arbitrary external addresses during testing. Leave empty to disable confirmation
-      emails entirely for the environment.
+    Description: Dev-only allowlist for student confirmation emails.
 
   ApiThrottlingRateLimit:
     Type: Number
     Default: 5
-    Description: >
-      Steady-state requests/second allowed on the API stage. Conservative default protects
-      the public POST /register endpoint from accidental abuse/spam; can be raised for
-      Production traffic once real usage patterns are known.
 
   ApiThrottlingBurstLimit:
     Type: Number
     Default: 10
-    Description: >
-      Maximum request burst capacity allowed on the API stage, on top of the steady-state
-      rate limit. Conservative default protects the public POST /register endpoint from
-      accidental abuse/spam; can be raised for Production traffic once real usage patterns
-      are known.
+
+Conditions:
+  IsProduction: !Equals [!Ref EnvironmentName, prod]
 
 Globals:
   Function:
@@ -77,6 +52,20 @@ Globals:
         ENVIRONMENT_NAME: !Ref EnvironmentName
 
 Resources:
+  # SES supports one contact list per AWS account, so the production stack
+  # owns the shared FOMA newsletter list used by both environments.
+  NewsletterContactList:
+    Type: AWS::SES::ContactList
+    Condition: IsProduction
+    Properties:
+      ContactListName: FOMA-Newsletter
+      Description: FOMA Foundation of Mastering Automation newsletter subscribers.
+      Topics:
+        - TopicName: FOMA-Newsletter
+          DisplayName: FOMA Newsletter
+          Description: Practical DevOps, DevSecOps, Cloud, Kubernetes and automation insights from Foundation of Mastering Automation.
+          DefaultSubscriptionStatus: OPT_OUT
+
   RegistrationsTable:
     Type: AWS::Serverless::SimpleTable
     Properties:
@@ -84,7 +73,6 @@ Resources:
       PrimaryKey:
         Name: registrationId
         Type: String
-      # On-demand billing: pay-per-request, no fixed/idle cost.
       SSESpecification:
         SSEEnabled: true
       Tags:
@@ -103,14 +91,9 @@ Resources:
           - OPTIONS
         AllowHeaders:
           - Content-Type
-      # Conservative throttling to protect the public POST /register route
-      # from accidental abuse/spam. Values are configurable via parameters
-      # so Production can use different (e.g. higher) limits later.
       DefaultRouteSettings:
         ThrottlingRateLimit: !Ref ApiThrottlingRateLimit
         ThrottlingBurstLimit: !Ref ApiThrottlingBurstLimit
-      # No custom domain yet per approved decision; uses the API Gateway
-      # generated HTTPS endpoint (https://{api-id}.execute-api.{region}.amazonaws.com/{stage}).
 
   RegisterFunction:
     Type: AWS::Serverless::Function
@@ -126,12 +109,8 @@ Resources:
           SES_ADMIN_RECIPIENT_EMAIL: !Ref SesAdminRecipientEmail
           SES_ALLOWED_TEST_RECIPIENTS: !Join [",", !Ref SesAllowedTestRecipients]
       Policies:
-        # Scoped exactly to this environment's table ARN only — Dev's role
-        # cannot reference Production's table (different stack, different ARN).
         - DynamoDBWritePolicy:
             TableName: !Ref RegistrationsTable
-        # Scoped to only the verified sender identity configured for this
-        # environment; cannot send "From" any other identity/domain.
         - Statement:
             - Sid: AllowSendFromEnvironmentSenderOnly
               Effect: Allow
@@ -147,14 +126,52 @@ Resources:
             Path: /register
             Method: POST
 
+  SubscribeFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: !Sub "foma-newsletter-subscribe-${EnvironmentName}"
+      CodeUri: src/functions/subscribe/
+      Handler: index.handler
+      Description: !Sub "FOMA newsletter subscription handler (${EnvironmentName})"
+      Environment:
+        Variables:
+          NEWSLETTER_CONTACT_LIST_NAME: FOMA-Newsletter
+          NEWSLETTER_TOPIC_NAME: FOMA-Newsletter
+          SES_SENDER_EMAIL: !Ref SesSenderEmail
+      Policies:
+        - Statement:
+            - Sid: ManageFomaNewsletterContacts
+              Effect: Allow
+              Action:
+                - ses:CreateContact
+                - ses:GetContact
+                - ses:UpdateContact
+              Resource: "*"
+            - Sid: SendFomaNewsletterWelcomeEmail
+              Effect: Allow
+              Action:
+                - ses:SendEmail
+              Resource: !Sub "arn:aws:ses:${AWS::Region}:${AWS::AccountId}:identity/${SesSenderEmail}"
+      Events:
+        SubscribePost:
+          Type: HttpApi
+          Properties:
+            ApiId: !Ref RegistrationApi
+            Path: /newsletter/subscribe
+            Method: POST
+
 Outputs:
   ApiEndpoint:
-    Description: Base URL of the generated API Gateway HTTPS endpoint for this environment.
+    Description: Base URL of the generated API Gateway HTTPS endpoint.
     Value: !Sub "https://${RegistrationApi}.execute-api.${AWS::Region}.amazonaws.com/${EnvironmentName}"
 
   RegisterEndpoint:
     Description: Full URL for the registration POST route.
     Value: !Sub "https://${RegistrationApi}.execute-api.${AWS::Region}.amazonaws.com/${EnvironmentName}/register"
+
+  NewsletterSubscribeEndpoint:
+    Description: Full URL for the newsletter subscription POST route.
+    Value: !Sub "https://${RegistrationApi}.execute-api.${AWS::Region}.amazonaws.com/${EnvironmentName}/newsletter/subscribe"
 
   TableName:
     Description: Name of the DynamoDB table for this environment.
@@ -163,3 +180,7 @@ Outputs:
   FunctionArn:
     Description: ARN of the registration Lambda function for this environment.
     Value: !GetAtt RegisterFunction.Arn
+
+  NewsletterFunctionArn:
+    Description: ARN of the newsletter subscription Lambda function.
+    Value: !GetAtt SubscribeFunction.Arn
