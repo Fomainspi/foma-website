@@ -1,0 +1,11 @@
+{
+  "name": "foma-newsletter-subscribe-function",
+  "version": "1.0.0",
+  "private": true,
+  "description": "FOMA newsletter subscription Lambda using Amazon SES list management.",
+  "type": "module",
+  "main": "index.mjs",
+  "dependencies": {
+    "@aws-sdk/client-sesv2": "^3.1125.0"
+  }
+}
