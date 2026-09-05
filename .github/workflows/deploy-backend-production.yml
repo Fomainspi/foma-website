@@ -1,0 +1,53 @@
+name: Deploy Production Backend to AWS
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'backend/**'
+      - '.github/workflows/deploy-backend-production.yml'
+
+permissions:
+  contents: read
+  id-token: write
+
+jobs:
+  deploy-backend:
+    name: Deploy Production Backend
+    runs-on: ubuntu-latest
+    environment: production
+
+    defaults:
+      run:
+        working-directory: backend
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ vars.AWS_ROLE_ARN }}
+          aws-region: ${{ vars.AWS_REGION }}
+
+      - name: Set up AWS SAM CLI
+        uses: aws-actions/setup-sam@v2
+
+      - name: Build SAM application
+        run: sam build
+
+      - name: Deploy Production SAM stack
+        run: |
+          sam deploy \
+            --config-env prod \
+            --no-confirm-changeset \
+            --no-fail-on-empty-changeset
+
+      - name: Show deployed API endpoint
+        run: |
+          aws cloudformation describe-stacks \
+            --stack-name foma-backend-prod \
+            --query 'Stacks[0].Outputs[?OutputKey==`ApiEndpoint` || OutputKey==`RegisterEndpoint`].[OutputKey,OutputValue]' \
+            --output table
