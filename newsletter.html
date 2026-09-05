@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>FOMA Newsletter</title>
+    <meta name="description" content="Foundation of Mastering Automation newsletter — practical DevOps, DevSecOps, Cloud, Kubernetes and automation insights.">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -27,10 +28,21 @@
     <div class="newsletter-hero-content">
         <h1 data-lang="newsletter_hero_title">FOMA Newsletter</h1>
         <p data-lang="newsletter_hero_subtitle">
-            Practical DevOps, DevSecOps, Cloud, Kubernetes and automation insights.
+            Practical DevOps, DevSecOps, Cloud, Kubernetes and automation insights from Foundation of Mastering Automation.
         </p>
-    </div>
 
+        <div class="newsletter-subscribe-card">
+            <h2 data-lang="newsletter_subscribe_title">Stay connected with FOMA</h2>
+            <p data-lang="newsletter_subscribe_desc">Subscribe to receive new insights and updates from Foundation of Mastering Automation.</p>
+            <form id="newsletterSubscribeForm" class="newsletter-subscribe-form" novalidate>
+                <label class="sr-only" for="newsletterEmail">Email address</label>
+                <input type="email" id="newsletterEmail" name="email" autocomplete="email" required data-lang-placeholder="newsletter_email_placeholder" placeholder="Your email address">
+                <button type="submit" data-lang="newsletter_subscribe_button">Subscribe</button>
+            </form>
+            <div id="newsletterSubscribeFeedback" class="newsletter-subscribe-feedback" aria-live="polite"></div>
+            <p class="newsletter-privacy-note" data-lang="newsletter_privacy_note">You can unsubscribe at any time.</p>
+        </div>
+    </div>
 </section>
 
 <section class="newsletter-posts">
@@ -43,7 +55,8 @@
 
 <script src="js/translations.js"></script>
 <script src="js/newsletter.js"></script>
-<script src="js/main.js?v=20260902"></script>
+<script src="js/newsletter-subscribe.js"></script>
+<script src="js/main.js?v=20260905"></script>
 
 </body>
 </html>
