@@ -17,7 +17,9 @@ Production cutover is complete and has been validated end-to-end.
 - Website: `https://foma.life`
 - Production API: `https://7gd3r709wf.execute-api.ap-southeast-1.amazonaws.com/prod`
 - Registration route: `POST /register`
+- Newsletter subscription route: `POST /newsletter/subscribe`
 - Lambda: `foma-register-prod`
+- Newsletter Lambda: `foma-newsletter-subscribe-prod`
 - DynamoDB table: `foma-registrations-prod`
 - CloudFormation stack: `foma-backend-prod`
 - Region: `ap-southeast-1`
@@ -28,6 +30,17 @@ The Lambda writes the registration to DynamoDB before attempting email
 notifications, so a successful registration response plus the subsequent
 admin email confirms the production registration path is functioning.
 
+## Newsletter
+
+The newsletter subscription endpoint uses Amazon SES contact-list management.
+A shared SES contact list named `FOMA-Newsletter` is created by the subscription
+Lambda when first needed, avoiding CloudFormation contact-list tagging
+requirements. The list contains the `FOMA-Newsletter` topic.
+
+A successful subscription explicitly opts the visitor into that topic and
+sends a welcome email through SES with an unsubscribe link. Newsletter
+subscriptions are separate from bootcamp registration records.
+
 ## Architecture
 
 ```
@@ -36,14 +49,15 @@ Frontend (dev.foma.life / foma.life)
         v
 API Gateway (HTTP API, per environment)
         |
-        v
-Lambda: foma-register-<env>  (Node.js 22.x)
+        +--> Lambda: foma-register-<env>
+        |        |
+        |        +--> DynamoDB: foma-registrations-<env>
+        |        +--> Amazon SES (registration emails)
         |
-        v
-DynamoDB: foma-registrations-<env>  (on-demand)
-        |
-        v
-Amazon SES (admin notification + optional student confirmation)
+        +--> Lambda: foma-newsletter-subscribe-<env>
+                 |
+                 +--> Amazon SES Contact List: FOMA-Newsletter
+                 +--> Amazon SES (welcome email)
 ```
 
 Every environment has its own CloudFormation stack, API, Lambda, DynamoDB
@@ -68,6 +82,7 @@ environment through `samconfig.toml`.
   input, computes the enrollment score server-side, stores the registration
   in DynamoDB, sends the admin notification, and optionally sends a student
   confirmation.
+- `src/functions/subscribe/index.mjs` — Newsletter subscription Lambda.
 - `src/functions/register/package.json` — Lambda dependencies.
 - `samconfig.toml` — Separate deployment configuration for Dev and Production.
 - `events/register-event.json` — Sample event for local testing.
@@ -114,7 +129,7 @@ The frontend resolves the registration API by hostname:
 - `dev.foma.life` → Dev `/dev/register` endpoint
 - `foma.life` → Production `/prod/register` endpoint
 
-This logic is in `js/main.js`.
+Newsletter subscription uses the corresponding `/newsletter/subscribe` route.
 
 ## Legacy backend / rollback
 
