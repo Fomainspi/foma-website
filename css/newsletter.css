@@ -30,6 +30,87 @@
     color: #e0e0e0;
 }
 
+.newsletter-subscribe-card {
+    max-width: 760px;
+    margin: 35px auto 0;
+    padding: 28px;
+    background: rgba(0, 0, 0, 0.35);
+    border: 1px solid #444;
+    border-radius: 14px;
+    box-sizing: border-box;
+}
+
+.newsletter-subscribe-card h2 {
+    margin: 0 0 10px;
+    color: white;
+    font-family: 'Poppins', sans-serif;
+}
+
+.newsletter-subscribe-card p {
+    margin: 0 0 20px;
+    font-size: 1em;
+}
+
+.newsletter-subscribe-form {
+    width: 100%;
+    display: flex;
+    gap: 10px;
+    align-items: stretch;
+    box-sizing: border-box;
+}
+
+.newsletter-subscribe-form input {
+    flex: 1 1 auto;
+    min-width: 0;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 13px 15px;
+    border: 1px solid #555;
+    border-radius: 7px;
+    background: #fff;
+    color: #111;
+    font-size: 16px;
+}
+
+.newsletter-subscribe-form button {
+    flex: 0 0 auto;
+    border: 0;
+    border-radius: 7px;
+    padding: 13px 22px;
+    background: #64ffda;
+    color: #000;
+    font-weight: 700;
+    font-size: 16px;
+    cursor: pointer;
+    white-space: nowrap;
+}
+
+.newsletter-subscribe-form button:disabled {
+    opacity: 0.6;
+    cursor: wait;
+}
+
+.newsletter-subscribe-feedback {
+    min-height: 24px;
+    margin-top: 14px;
+    font-size: 0.95em;
+    line-height: 1.5;
+}
+
+.newsletter-subscribe-feedback.success {
+    color: #64ffda;
+}
+
+.newsletter-subscribe-feedback.error {
+    color: #ff8a80;
+}
+
+.newsletter-privacy-note {
+    margin: 8px 0 0 !important;
+    color: #aaa !important;
+    font-size: 0.85em !important;
+}
+
 .newsletter-back-home-btn {
     position: absolute;
     top: 20px;
@@ -136,13 +217,42 @@
     font-size: 1.1em;
 }
 
+.newsletter-error h3 {
+    color: #64ffda;
+    margin-bottom: 10px;
+}
+
+.newsletter-error p {
+    color: #aaa;
+    font-size: 0.95em;
+}
+
 @media (max-width: 700px) {
+    .newsletter-hero {
+        padding: 75px 15px 55px;
+    }
+
     .newsletter-hero h1 {
         font-size: 2.4em;
     }
 
     .newsletter-hero p {
         font-size: 1.1em;
+    }
+
+    .newsletter-subscribe-card {
+        padding: 20px 15px;
+        margin-top: 25px;
+    }
+
+    .newsletter-subscribe-form {
+        flex-direction: column;
+    }
+
+    .newsletter-subscribe-form input,
+    .newsletter-subscribe-form button {
+        width: 100%;
+        min-height: 48px;
     }
 }
 
