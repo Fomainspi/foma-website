@@ -1,7 +1,9 @@
-import { SESv2Client, CreateContactListCommand, CreateContactCommand, GetContactCommand, UpdateContactCommand, SendEmailCommand } from "@aws-sdk/client-sesv2";
+import { SESv2Client, CreateContactCommand, GetContactCommand, UpdateContactCommand, SendEmailCommand } from "@aws-sdk/client-sesv2";
 
 const sesClient = new SESv2Client({});
 const ENVIRONMENT_NAME = process.env.ENVIRONMENT_NAME || "dev";
+// The contact list is created once as infrastructure (see backend/template.yaml).
+// The Lambda only manages contacts inside the existing list.
 const CONTACT_LIST_NAME = process.env.NEWSLETTER_CONTACT_LIST_NAME || "FOMA-Newsletter";
 const TOPIC_NAME = process.env.NEWSLETTER_TOPIC_NAME || "FOMA-Newsletter";
 const SES_SENDER_EMAIL = process.env.SES_SENDER_EMAIL;
@@ -19,30 +21,7 @@ function jsonResponse(statusCode, body) {
     };
 }
 
-async function ensureContactList() {
-    try {
-        await sesClient.send(new CreateContactListCommand({
-            ContactListName: CONTACT_LIST_NAME,
-            Description: "FOMA Foundation of Mastering Automation newsletter subscribers.",
-            Topics: [
-                {
-                    TopicName: TOPIC_NAME,
-                    DisplayName: "FOMA Newsletter",
-                    Description: "Practical DevOps, DevSecOps, Cloud, Kubernetes and automation insights from Foundation of Mastering Automation.",
-                    DefaultSubscriptionStatus: "OPT_OUT"
-                }
-            ]
-        }));
-    } catch (error) {
-        if (error?.name !== "AlreadyExistsException") {
-            throw error;
-        }
-    }
-}
-
 async function upsertContact(email) {
-    await ensureContactList();
-
     const contact = {
         ContactListName: CONTACT_LIST_NAME,
         EmailAddress: email,

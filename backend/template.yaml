@@ -25,6 +25,18 @@ Parameters:
     Type: String
     Description: FOMA admin mailbox receiving registration notifications.
 
+  NewsletterContactListName:
+    Type: String
+    Default: FOMA-Newsletter
+    Description: Name of the existing SES v2 contact list used for newsletter subscriptions.
+    AllowedPattern: "^[A-Za-z0-9_-]+$"
+
+  NewsletterTopicName:
+    Type: String
+    Default: FOMA-Newsletter
+    Description: Name of the topic inside the newsletter contact list.
+    AllowedPattern: "^[A-Za-z0-9_-]+$"
+
   SesAllowedTestRecipients:
     Type: CommaDelimitedList
     Default: ""
@@ -49,6 +61,23 @@ Globals:
         ENVIRONMENT_NAME: !Ref EnvironmentName
 
 Resources:
+  # The SES contact list is created exactly once as infrastructure by this
+  # stack (DeletionPolicy/UpdateReplacePolicy: Retain so the existing list
+  # and its contacts are never deleted by stack operations). The subscribe
+  # Lambda only adds/updates contacts inside this list.
+  NewsletterContactList:
+    Type: AWS::SES::ContactList
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      ContactListName: !Ref NewsletterContactListName
+      Description: FOMA Foundation of Mastering Automation newsletter subscribers.
+      Topics:
+        - TopicName: !Ref NewsletterTopicName
+          DisplayName: FOMA Newsletter
+          Description: Practical DevOps, DevSecOps, Cloud, Kubernetes and automation insights from Foundation of Mastering Automation.
+          DefaultSubscriptionStatus: OPT_OUT
+
   RegistrationsTable:
     Type: AWS::Serverless::SimpleTable
     Properties:
@@ -118,24 +147,27 @@ Resources:
       Description: !Sub "FOMA newsletter subscription handler (${EnvironmentName})"
       Environment:
         Variables:
-          NEWSLETTER_CONTACT_LIST_NAME: FOMA-Newsletter
-          NEWSLETTER_TOPIC_NAME: FOMA-Newsletter
+          NEWSLETTER_CONTACT_LIST_NAME: !Ref NewsletterContactListName
+          NEWSLETTER_TOPIC_NAME: !Ref NewsletterTopicName
           SES_SENDER_EMAIL: !Ref SesSenderEmail
       Policies:
         - Statement:
+            # The contact list is created by this stack (see NewsletterContactList),
+            # never by the Lambda. The Lambda only manages contacts inside it.
             - Sid: ManageFomaNewsletterContacts
               Effect: Allow
               Action:
-                - ses:CreateContactList
                 - ses:CreateContact
                 - ses:GetContact
                 - ses:UpdateContact
-              Resource: "*"
+              Resource: !Sub "arn:aws:ses:${AWS::Region}:${AWS::AccountId}:contact-list/${NewsletterContactListName}"
             - Sid: SendFomaNewsletterWelcomeEmail
               Effect: Allow
               Action:
                 - ses:SendEmail
-              Resource: !Sub "arn:aws:ses:${AWS::Region}:${AWS::AccountId}:identity/${SesSenderEmail}"
+              Resource:
+                - !Sub "arn:aws:ses:${AWS::Region}:${AWS::AccountId}:identity/${SesSenderEmail}"
+                - !Sub "arn:aws:ses:${AWS::Region}:${AWS::AccountId}:contact-list/${NewsletterContactListName}"
       Events:
         SubscribePost:
           Type: HttpApi
@@ -168,3 +200,7 @@ Outputs:
   NewsletterFunctionArn:
     Description: ARN of the newsletter subscription Lambda function.
     Value: !GetAtt SubscribeFunction.Arn
+
+  NewsletterContactListName:
+    Description: Name of the SES contact list used for newsletter subscriptions.
+    Value: !Ref NewsletterContactListName
