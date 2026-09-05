@@ -60,6 +60,17 @@ fetch(`${pathPrefix}components/header.html?t=${Date.now()}`)
     })
     .catch(error => console.error('Error loading header:', error));
 
+// Registration API endpoint resolution.
+// Dev uses the dedicated Dev backend; Production uses the new Production backend.
+const PRODUCTION_REGISTER_ENDPOINT = 'https://7gd3r709wf.execute-api.ap-southeast-1.amazonaws.com/prod/register';
+const DEV_REGISTER_ENDPOINT = 'https://04almrnto7.execute-api.ap-southeast-1.amazonaws.com/dev/register';
+
+function getRegisterEndpoint() {
+    return window.location.hostname === 'dev.foma.life'
+        ? DEV_REGISTER_ENDPOINT
+        : PRODUCTION_REGISTER_ENDPOINT;
+}
+
 // Bootcamp registration form: submit to backend API.
 function initWaitlistForm() {
     const bootcampForm = document.getElementById('bootcampForm') || document.getElementById('waitlistForm');
@@ -113,7 +124,7 @@ function initWaitlistForm() {
         };
 
         try {
-            const response = await fetch('https://u16cqud033.execute-api.ap-southeast-1.amazonaws.com/register', {
+            const response = await fetch(getRegisterEndpoint(), {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
