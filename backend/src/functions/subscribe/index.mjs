@@ -34,8 +34,6 @@ async function ensureContactList() {
             ]
         }));
     } catch (error) {
-        // SES permits only one contact list per account. If another invocation
-        // already created the shared FOMA list, it is safe to continue.
         if (error?.name !== "AlreadyExistsException") {
             throw error;
         }
@@ -66,8 +64,6 @@ async function upsertContact(email) {
         }
     }
 
-    // If the address previously existed (including a previous unsubscribe),
-    // explicitly opt it back in because the visitor has just subscribed again.
     const existing = await sesClient.send(
         new GetContactCommand({
             ContactListName: CONTACT_LIST_NAME,
@@ -97,7 +93,7 @@ async function upsertContact(email) {
 }
 
 async function sendWelcomeEmail(email) {
-    if (!SES_SENDER_EMAIL) return;
+    if (!SES_SENDER_EMAIL) return false;
 
     await sesClient.send(
         new SendEmailCommand({
@@ -129,13 +125,15 @@ async function sendWelcomeEmail(email) {
                             ].join("\n")
                         },
                         Html: {
-                            Data: `<!doctype html><html><body style="font-family:Arial,sans-serif;line-height:1.6;color:#222"><h1>Foundation of Mastering Automation</h1><p>Thank you for subscribing to the <strong>FOMA Newsletter</strong>.</p><p>You will receive practical insights and updates about DevOps, DevSecOps, Cloud, Kubernetes and automation.</p><p><a href="https://foma.life">Visit foma.life</a></p><hr><p style="font-size:12px;color:#666">You can unsubscribe at any time using the unsubscribe link below.</p><p style="font-size:12px"><a href="{{amazonSESUnsubscribeUrl}}">Unsubscribe from the FOMA Newsletter</a></p><p style="font-size:12px;color:#666">— Foundation of Mastering Automation (FOMA)</p></body></html>`
+                            Data: `<!doctype html><html><body style="font-family:Arial,sans-serif;line-height:1.6;color:#222"><h1>Foundation of Mastering Automation</h1><p>Thank you for subscribing to the <strong>FOMA Newsletter</strong>.</p><p>You will receive practical insights and updates about DevOps, DevSecOps, Cloud, Kubernetes and automation.</p><p><a href="https://foma.life">Visit foma.life</a></p><hr><p style="font-size:12px;color:#666">You can unsubscribe at any time using the unsubscribe link below.</p><p style="font-size:12px"><a href="{{amazonSESUnsubscribeUrl}}">Unsubscribe from the FOMA Newsletter</a></p><p style="font-size:12px;color:#666">— Foundation of Mastering Automation</p></body></html>`
                         }
                     }
                 }
             }
         })
     );
+
+    return true;
 }
 
 export const handler = async (event) => {
@@ -154,16 +152,34 @@ export const handler = async (event) => {
 
     try {
         await upsertContact(email);
-        await sendWelcomeEmail(email);
     } catch (error) {
-        console.error("Newsletter subscription failed", error);
+        console.error("Newsletter contact subscription failed", {
+            name: error?.name,
+            message: error?.message,
+            code: error?.Code || error?.code,
+            statusCode: error?.$metadata?.httpStatusCode
+        });
         return jsonResponse(500, {
             message: "We could not complete your subscription right now. Please try again later."
         });
     }
 
+    let welcomeEmailSent = false;
+    try {
+        welcomeEmailSent = await sendWelcomeEmail(email);
+    } catch (error) {
+        console.error("Newsletter welcome email failed", {
+            name: error?.name,
+            message: error?.message,
+            code: error?.Code || error?.code,
+            statusCode: error?.$metadata?.httpStatusCode
+        });
+    }
+
     return jsonResponse(201, {
-        message: `You're subscribed to the FOMA Newsletter. Welcome to Foundation of Mastering Automation!`,
+        message: welcomeEmailSent
+            ? "You're subscribed to the FOMA Newsletter. Welcome to Foundation of Mastering Automation!"
+            : "You're subscribed to the FOMA Newsletter. Welcome to Foundation of Mastering Automation! Your welcome email may be delayed.",
         website: "https://foma.life",
         environment: ENVIRONMENT_NAME
     });
