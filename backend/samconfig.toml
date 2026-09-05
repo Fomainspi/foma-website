@@ -33,7 +33,6 @@ parameter_overrides = [
     "AllowedOrigin=https://foma.life",
     "SesSenderEmail=bootcamp@foma.life",
     "SesAdminRecipientEmail=bootcamp@foma.life",
-    "SesAllowedTestRecipients=",
     "ApiThrottlingRateLimit=5",
     "ApiThrottlingBurstLimit=10"
 ]
