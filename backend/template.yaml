@@ -91,6 +91,20 @@ Resources:
         Environment: !Ref EnvironmentName
         Project: foma-backend
 
+  NewsletterSendLogTable:
+    Type: AWS::Serverless::SimpleTable
+    Properties:
+      TableName: !Sub "foma-newsletter-sends-${EnvironmentName}"
+      PrimaryKey:
+        Name: sendKey
+        Type: String
+      SSESpecification:
+        SSEEnabled: true
+      Tags:
+        Environment: !Ref EnvironmentName
+        Project: foma-backend
+        Purpose: newsletter-delivery-log
+
   RegistrationApi:
     Type: AWS::Serverless::HttpApi
     Properties:
@@ -152,8 +166,6 @@ Resources:
           SES_SENDER_EMAIL: !Ref SesSenderEmail
       Policies:
         - Statement:
-            # The contact list is created by this stack (see NewsletterContactList),
-            # never by the Lambda. The Lambda only manages contacts inside it.
             - Sid: ManageFomaNewsletterContacts
               Effect: Allow
               Action:
@@ -176,6 +188,49 @@ Resources:
             Path: /newsletter/subscribe
             Method: POST
 
+  PublishNewsletterFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: !Sub "foma-newsletter-publish-${EnvironmentName}"
+      CodeUri: src/functions/publish-newsletter/
+      Handler: index.handler
+      Description: !Sub "FOMA newsletter publication broadcaster (${EnvironmentName})"
+      Timeout: 900
+      MemorySize: 256
+      Environment:
+        Variables:
+          NEWSLETTER_CONTACT_LIST_NAME: !Ref NewsletterContactListName
+          NEWSLETTER_TOPIC_NAME: !Ref NewsletterTopicName
+          NEWSLETTER_SEND_LOG_TABLE: !Ref NewsletterSendLogTable
+          NEWSLETTER_ARTICLE_BASE_URL: "https://foma.life/newsletter/article"
+          NEWSLETTER_CMS_API_URL: "https://admin.foma.life/api/newsletters"
+          SES_SENDER_EMAIL: !Ref SesSenderEmail
+      Policies:
+        - DynamoDBReadPolicy:
+            TableName: !Ref NewsletterSendLogTable
+        - DynamoDBWritePolicy:
+            TableName: !Ref NewsletterSendLogTable
+        - Statement:
+            - Sid: ReadFomaNewsletterContacts
+              Effect: Allow
+              Action:
+                - ses:ListContacts
+              Resource: !Sub "arn:aws:ses:${AWS::Region}:${AWS::AccountId}:contact-list/${NewsletterContactListName}"
+            - Sid: SendFomaNewsletterPublication
+              Effect: Allow
+              Action:
+                - ses:SendEmail
+              Resource:
+                - !Sub "arn:aws:ses:${AWS::Region}:${AWS::AccountId}:identity/${SesSenderEmail}"
+                - !Sub "arn:aws:ses:${AWS::Region}:${AWS::AccountId}:contact-list/${NewsletterContactListName}"
+      Events:
+        PublishNewsletterPost:
+          Type: HttpApi
+          Properties:
+            ApiId: !Ref RegistrationApi
+            Path: /newsletter/publish
+            Method: POST
+
 Outputs:
   ApiEndpoint:
     Description: Base URL of the generated API Gateway HTTPS endpoint.
@@ -189,6 +244,10 @@ Outputs:
     Description: Full URL for the newsletter subscription POST route.
     Value: !Sub "https://${RegistrationApi}.execute-api.${AWS::Region}.amazonaws.com/${EnvironmentName}/newsletter/subscribe"
 
+  NewsletterPublishEndpoint:
+    Description: Full URL for the Strapi entry.publish webhook.
+    Value: !Sub "https://${RegistrationApi}.execute-api.${AWS::Region}.amazonaws.com/${EnvironmentName}/newsletter/publish"
+
   TableName:
     Description: Name of the DynamoDB table for this environment.
     Value: !Ref RegistrationsTable
@@ -198,8 +257,12 @@ Outputs:
     Value: !GetAtt RegisterFunction.Arn
 
   NewsletterFunctionArn:
-    Description: ARN of the newsletter subscription Lambda function.
+    Description: ARN of the newsletter subscription Lambda function for this environment.
     Value: !GetAtt SubscribeFunction.Arn
+
+  NewsletterPublisherFunctionArn:
+    Description: ARN of the newsletter publication broadcaster Lambda function for this environment.
+    Value: !GetAtt PublishNewsletterFunction.Arn
 
   NewsletterContactListName:
     Description: Name of the SES contact list used for newsletter subscriptions.
