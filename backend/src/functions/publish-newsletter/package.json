@@ -1,0 +1,13 @@
+{
+  "name": "foma-newsletter-publish-function",
+  "version": "1.0.0",
+  "private": true,
+  "description": "FOMA newsletter publication broadcaster using Amazon SES list management.",
+  "type": "module",
+  "main": "index.mjs",
+  "dependencies": {
+    "@aws-sdk/client-dynamodb": "^3.1125.0",
+    "@aws-sdk/lib-dynamodb": "^3.1125.0",
+    "@aws-sdk/client-sesv2": "^3.1125.0"
+  }
+}
